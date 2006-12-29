@@ -35,7 +35,7 @@ CMyRenderer::CMyRenderer( const int aWidth, const int aHeight )
 CMyRenderer::~CMyRenderer()
 {
 	glDeleteTextures( KNumberOfTextures ,iTextureId );
-	glDeleteTextures( KNumberOfColorMaps, iColorMapId );
+	delete[] iTextures;
 
 	delete iKa;		
 	delete iKd;
@@ -269,46 +269,14 @@ void CMyRenderer::InitFramebufferObject()
 {
 	iFrameBufferObject = new TFramebufferObject();
 
-	glGenTextures( 1, &iDepthMapId );
-	glBindTexture( GL_TEXTURE_2D, iDepthMapId );
+	iTextures[EDepthTexture] = new TTexture(0, false, GL_DEPTH_COMPONENT, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_DEPTH_COMPONENT, GL_FLOAT);
+	iTextures[EPhongTexture] = new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT);
+	iTextures[EBrightPassTexture] = new TTexture(0, true, GL_RGBA, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT);
+	iTextures[EFirstBlurTexture] = new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT);
+	iTextures[ESecondBlurTexture] = new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT);
+	iTextures[EThirdBlurTexture] = new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT);
 
-	// set texture parameters
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-
-	// set up the texture size, type, format,...
-	glTexImage2D( GL_TEXTURE_2D, KTextureLevel, GL_DEPTH_COMPONENT, KTextureWidth, KTextureHeight, KTextureBorder, GL_DEPTH_COMPONENT, GL_FLOAT, NULL );
-
-	// attach the depth to the frame buffer
-	iFrameBufferObject->AttachTexture( GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, iDepthMapId );
-
-	glGenTextures( KNumberOfColorMaps, iColorMapId );
-	for(int i=0; i< KNumberOfColorMaps; i++)
-	{
-		glBindTexture( GL_TEXTURE_2D, iColorMapId[i] );
-		//		if ( i == EFirstBlurTextureId )
-		if (i == EBrightPassTextureId)
-		{
-			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);			
-		}
-		else
-		{
-			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );			
-		}
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-		glTexImage2D( GL_TEXTURE_2D, KTextureLevel, GL_RGBA, KTextureWidth, KTextureHeight, KTextureBorder, GL_RGBA, GL_FLOAT, NULL );
-
-		if (i == EBrightPassTextureId )
-		{
-			glGenerateMipmapEXT( GL_TEXTURE_2D );
-		}
-	}
+	iFrameBufferObject->AttachTexture( GL_DEPTH_ATTACHMENT_EXT, iTextures[EDepthTexture]->iTarget, iTextures[EDepthTexture]->iId );
 	CHECK_GL_ERROR();
 }
 
@@ -439,82 +407,82 @@ void CMyRenderer::RenderObjects()
 
 	//chevy->draw();
 	//	glPopMatrix();
-		for (int i = 0; i < 3; i++)
-			{
-			for (int j = 0; j < 3; j++) 
-				{
-				glPushMatrix();
-				
-				glTranslatef(i-1, j-1, 0);
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++) 
+		{
+			glPushMatrix();
+
+			glTranslatef(i-1, j-1, 0);
 			//	glRotatef(iWobble, 0.5, 1, 0.3);
-	      
-				switch (i*3 + j)
-					{
-					case 0:
-						glShadeModel(GL_FLAT);
-						glutSolidCube(0.5);
-						break;
-	          
-					case 1:
-						glShadeModel(GL_SMOOTH);
-						glutSolidSphere(0.4, 24, 18);
-						break;
-	          
-					case 2:
-						glShadeModel(GL_SMOOTH);
-						glutSolidCone(0.3, 0.6, 24, 2);
-						break;
-	          
-					case 3:
-						glShadeModel(GL_SMOOTH);
-						glutSolidTorus(0.1, 0.3, 12, 24);
-						break;
-	          
-					case 4:
-						glShadeModel(GL_FLAT);
-						glScalef(0.2, 0.2, 0.2);
-						glEnable(GL_NORMALIZE);
-						glutSolidDodecahedron();
-						break;
-	          
-					case 5:
-						glShadeModel(GL_FLAT);
-						glScalef(0.4, 0.4, 0.4);
-						glutSolidOctahedron();     /* Still normalizing */
-						break;
-	          
-					case 6:
-						glShadeModel(GL_FLAT);
-						glScalef(0.4, 0.4, 0.4);
-						glutSolidTetrahedron();    /* Still normalizing */
-						break;
-	          
-					case 7:
-						glShadeModel(GL_FLAT);
-						glScalef(0.35, 0.35, 0.35);
-						glutSolidIcosahedron();    /* Still normalizing */
-						glDisable(GL_NORMALIZE);
-						break;
-					case 8:
-						glLineWidth(4.0);
-						glBegin(GL_LINES);
-						glVertex3f(-0.5, 0.0, 0.0);
-						glVertex3f(0.5, 0.0, 0.0);
-						glEnd();
-						glLineWidth(1.0);
-						break;
-						
-	//				case 8:
-	//					glShadeModel(GL_SMOOTH);
-	//					glutSolidTeapot(0.4);
-	//					break;
-	          
-					default:
-						break;
-					}
-				glPopMatrix();
-				}
+
+			switch (i*3 + j)
+			{
+			case 0:
+				glShadeModel(GL_FLAT);
+				glutSolidCube(0.5);
+				break;
+
+			case 1:
+				glShadeModel(GL_SMOOTH);
+				glutSolidSphere(0.4, 24, 18);
+				break;
+
+			case 2:
+				glShadeModel(GL_SMOOTH);
+				glutSolidCone(0.3, 0.6, 24, 2);
+				break;
+
+			case 3:
+				glShadeModel(GL_SMOOTH);
+				glutSolidTorus(0.1, 0.3, 12, 24);
+				break;
+
+			case 4:
+				glShadeModel(GL_FLAT);
+				glScalef(0.2, 0.2, 0.2);
+				glEnable(GL_NORMALIZE);
+				glutSolidDodecahedron();
+				break;
+
+			case 5:
+				glShadeModel(GL_FLAT);
+				glScalef(0.4, 0.4, 0.4);
+				glutSolidOctahedron();     /* Still normalizing */
+				break;
+
+			case 6:
+				glShadeModel(GL_FLAT);
+				glScalef(0.4, 0.4, 0.4);
+				glutSolidTetrahedron();    /* Still normalizing */
+				break;
+
+			case 7:
+				glShadeModel(GL_FLAT);
+				glScalef(0.35, 0.35, 0.35);
+				glutSolidIcosahedron();    /* Still normalizing */
+				glDisable(GL_NORMALIZE);
+				break;
+			case 8:
+				glLineWidth(4.0);
+				glBegin(GL_LINES);
+				glVertex3f(-0.5, 0.0, 0.0);
+				glVertex3f(0.5, 0.0, 0.0);
+				glEnd();
+				glLineWidth(1.0);
+				break;
+
+				//				case 8:
+				//					glShadeModel(GL_SMOOTH);
+				//					glutSolidTeapot(0.4);
+				//					break;
+
+			default:
+				break;
 			}
+			glPopMatrix();
+		}
+	}
 	glPopMatrix();
 }
 
@@ -585,7 +553,7 @@ void CMyRenderer::RenderBloomObjects()
 	glLoadIdentity();
 
 	//// render real scene to FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, iColorMapId[EPhongTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EPhongTexture]->iTarget, iTextures[EPhongTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EPhongTextureId] );
 	CHECK_GL_ERROR();
 	bool result = iFrameBufferObject->IsValid();
 	if (false == result)
@@ -593,7 +561,7 @@ void CMyRenderer::RenderBloomObjects()
 		EXIT(-1);
 	}  
 	CHECK_GL_ERROR();
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EPhongTexture]->iWidth, iTextures[EPhongTexture]->iHeight );//KTextureWidth, KTextureHeight );
 	CHECK_GL_ERROR();
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
@@ -624,13 +592,13 @@ void CMyRenderer::RenderBloomObjects()
 
 	// bright pass
 	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, iColorMapId[EBrightPassTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EBrightPassTexture]->iTarget, iTextures[EBrightPassTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EBrightPassTextureId] );
 	result = iFrameBufferObject->IsValid();
 	if (false == result)
 	{
 		EXIT(-1);
 	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EBrightPassTexture]->iWidth, iTextures[EBrightPassTexture]->iHeight);//, KTextureWidth, KTextureHeight );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	// set up shading program (bloom effect)
@@ -638,20 +606,20 @@ void CMyRenderer::RenderBloomObjects()
 	iShaderProgram[EBrightPassProgram]->Enable( true );
 
 	// render screen size quad with Phong texture (real scene -> bloom effect scene)
-	RenderSceneOnQuad( iColorMapId[EPhongTextureId], false );
-
+	//	RenderSceneOnQuad( iColorMapId[EPhongTextureId], false );
+	RenderSceneOnQuad( iTextures[EPhongTexture]->iId, false );
 	CHECK_GL_ERROR();
 
 	// first blur pass
 
 	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, iColorMapId[EFirstBlurTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EFirstBlurTexture]->iTarget, iTextures[EFirstBlurTexture]->iId );// GL_TEXTURE_2D, iColorMapId[EFirstBlurTextureId] );
 	result = iFrameBufferObject->IsValid();
 	if (false == result)
 	{	
 		EXIT(-1);
 	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EFirstBlurTexture]->iWidth, iTextures[EFirstBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
 
@@ -661,19 +629,19 @@ void CMyRenderer::RenderBloomObjects()
 	iShaderProgram[EBlurProgram]->Enable( true );
 
 	// render screen size quad with texture (bloom effect scene -> blur)	
-	RenderSceneOnQuad( iColorMapId[EBrightPassTextureId], true );
-
+	//	RenderSceneOnQuad( iColorMapId[EBrightPassTextureId], true );
+	RenderSceneOnQuad( iTextures[EBrightPassTexture]->iId, true );
 
 
 	//second blur pass
 	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, iColorMapId[ESecondBlurTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[ESecondBlurTexture]->iTarget, iTextures[ESecondBlurTexture]->iId );//GL_TEXTURE_2D, iColorMapId[ESecondBlurTextureId] );
 	result = iFrameBufferObject->IsValid();
 	if (false == result)
 	{	
 		EXIT(-1);
 	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[ESecondBlurTexture]->iWidth, iTextures[ESecondBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
 
@@ -684,30 +652,30 @@ void CMyRenderer::RenderBloomObjects()
 	iShaderProgram[EBlurProgram]->Enable( true );
 
 	// render screen size quad with texture (bloom effect scene -> blur)	
-	RenderSceneOnQuad( iColorMapId[EFirstBlurTextureId], false );
-
+	//RenderSceneOnQuad( iColorMapId[EFirstBlurTextureId], false );
+	RenderSceneOnQuad( iTextures[EFirstBlurTexture]->iId, false );
 	////disabled the third blur pass
 
-	////	// change FBO texture (color attachment)
-	////	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, iColorMapId[EThirdBlurTextureId] );
-	////	result = iFrameBufferObject->IsValid();
-	////	if (false == result)
-	////		{	
-	////		EXIT(-1);
-	////		} 
-	////	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, KTextureWidth, KTextureHeight );
-	////	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	////	CHECK_GL_ERROR();
-	////	
-	////	
-	////	// set up shading program (blur effect)
-	////	iSampleDistance->setValue( iThirdBlurSampleDistance );
-	////	iMipMapBias->setValue( iSecondBlurMipMapBias );
-	////	iShaderProgram[EBlurProgram]->Enable( true );
-	////	
-	////	// render screen size quad with texture (bloom effect scene -> blur)	
-	////	RenderSceneOnQuad( iColorMapId[ESecondBlurTextureId], false );
+	// change FBO texture (color attachment)
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EThirdBlurTexture]->iTarget, iTextures[EThirdBlurTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EThirdBlurTextureId] );
+	result = iFrameBufferObject->IsValid();
+	if (false == result)
+	{	
+		EXIT(-1);
+	} 
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EThirdBlurTexture]->iWidth, iTextures[EThirdBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	CHECK_GL_ERROR();
 
+
+	// set up shading program (blur effect)
+	iSampleDistance->setValue( iThirdBlurSampleDistance );
+	iMipMapBias->setValue( iSecondBlurMipMapBias );
+	iShaderProgram[EBlurProgram]->Enable( true );
+
+	// render screen size quad with texture (bloom effect scene -> blur)	
+	RenderSceneOnQuad( iTextures[ESecondBlurTexture]->iId, false );
+	RenderSceneOnQuad( iTextures[ESecondBlurTexture]->iId, false );
 
 	// set up shading program (combiner)
 	iShaderProgram[ECombineProgram]->Enable( true );
@@ -725,19 +693,18 @@ void CMyRenderer::RenderBloomObjects()
 
 	// blending using multi texture (real scene + blurred bloom scene)
 	// render screen size quad with multi texture
-	//	RenderSceneOnQuad( iColorMapId[EPhongTextureId], iColorMapId[EFirstBlurTextureId], iColorMapId[ESecondBlurTextureId], iColorMapId[EThirdBlurTextureId] );
-	RenderSceneOnQuad( iColorMapId[EPhongTextureId], iColorMapId[EFirstBlurTextureId], iColorMapId[ESecondBlurTextureId] );	
-	//	RenderSceneOnQuad( iColorMapId[EPhongTextureId], iColorMapId[EFirstBlurTextureId] );	
+	RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId, iTextures[ESecondBlurTexture]->iId, iTextures[EThirdBlurTexture]->iId );
+	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId, iTextures[ESecondBlurTexture]->iId );
+	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId );
 
 	//functions to test separate buffers
 	//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
 	//CShaderProgram::DisableAll();
-	//RenderSceneOnQuad( iColorMapId[EPhongTextureId], false );
-	//RenderSceneOnQuad( iColorMapId[EBrightPassTextureId], false );	
-	//RenderSceneOnQuad( iColorMapId[EFirstBlurTextureId], false );
-	//RenderSceneOnQuad( iColorMapId[ESecondBlurTextureId], false );	
-	//RenderSceneOnQuad( iColorMapId[EThirdBlurTextureId], false );
-
+	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, false );
+	//RenderSceneOnQuad( iTextures[EBrightPassTexture]->iId, false );	
+	//RenderSceneOnQuad( iTextures[EFirstBlurTexture]->iId, false );
+	//RenderSceneOnQuad( iTextures[ESecondBlurTexture]->iId, false );	
+	//RenderSceneOnQuad( iTextures[EThirdBlurTexture]->iId, false );
 }
 
 
