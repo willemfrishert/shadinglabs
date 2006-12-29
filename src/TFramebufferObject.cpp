@@ -63,7 +63,7 @@ void TFramebufferObject::Enable( bool aStatus,  GLenum aBuffer, const int aViewp
 		{
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 		}
-//	glDrawBuffer( aBuffer );
+	glDrawBuffer( aBuffer );
 	glViewport(0, 0, aViewportWidth, aViewportHeight);
 	}
 

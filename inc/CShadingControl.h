@@ -5,12 +5,12 @@
 #include "ShaderUniformObject.h"
 #include "ShaderAttributeObject.h"
 
-class CShaderProgram
+class CShadingControl
 	{
 	//METHODS
 public:
-    CShaderProgram();            // Standard Constructor
-    ~CShaderProgram();           // Destructor
+    CShadingControl();            // Standard Constructor
+    ~CShadingControl();           // Destructor
 
     void AddShader(CShader* Shader); // Add a Vertex or Fragment Program
     

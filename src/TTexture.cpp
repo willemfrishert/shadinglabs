@@ -42,6 +42,7 @@ TTexture::TTexture(  GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents,
 
 TTexture::~TTexture()
 {
+	glDeleteTextures(1, &iId);
 	if (NULL != iPixels)
 	{
 		delete iPixels;

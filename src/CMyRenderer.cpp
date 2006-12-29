@@ -35,7 +35,12 @@ CMyRenderer::CMyRenderer( const int aWidth, const int aHeight )
 CMyRenderer::~CMyRenderer()
 {
 	glDeleteTextures( KNumberOfTextures ,iTextureId );
-	delete[] iTextures;
+
+	for( int i=0; i < KNumberOfColorMaps+KNUmberOfDepthMaps; i++)
+	{
+		delete iTextures[i];
+	}
+
 
 	delete iKa;		
 	delete iKd;
@@ -112,7 +117,7 @@ void CMyRenderer::InitPhongShading()
 {
 	iVertexShader[EPhongProgram] = new CVertexShader();
 	iFragmentShader[EPhongProgram] = new CFragmentShader();
-	iShaderProgram[EPhongProgram] = new CShaderProgram();
+	iShaderProgram[EPhongProgram] = new CShadingControl();
 
 	iVertexShader[EPhongProgram]->LoadFromFile( "shader/phong.vert" );
 	iShaderProgram[EPhongProgram]->AddShader( iVertexShader[EPhongProgram] );
@@ -152,7 +157,7 @@ void CMyRenderer::InitCartoonShadering()
 
 	iVertexShader[ECartoonProgram] = new CVertexShader();
 	iFragmentShader[ECartoonProgram] = new CFragmentShader();
-	iShaderProgram[ECartoonProgram] = new CShaderProgram();
+	iShaderProgram[ECartoonProgram] = new CShadingControl();
 
 	iVertexShader[ECartoonProgram]->LoadFromFile( "shader/toontexture.vert" );
 	iShaderProgram[ECartoonProgram]->AddShader( iVertexShader[ECartoonProgram] );
@@ -181,7 +186,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	bool result = false;
 
 	iFragmentShader[EBrightPassProgram] = new CFragmentShader();
-	iShaderProgram[EBrightPassProgram] = new CShaderProgram();
+	iShaderProgram[EBrightPassProgram] = new CShadingControl();
 
 	iFragmentShader[EBrightPassProgram]->LoadFromFile( "shader/brightpass.frag" );
 	iShaderProgram[EBrightPassProgram]->AddShader( iFragmentShader[EBrightPassProgram] );
@@ -199,7 +204,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	CHECK_GL_ERROR();
 
 	iFragmentShader[EBlurProgram] = new CFragmentShader();
-	iShaderProgram[EBlurProgram] = new CShaderProgram();
+	iShaderProgram[EBlurProgram] = new CShadingControl();
 
 	iFragmentShader[EBlurProgram]->LoadFromFile( "shader/blur.frag" );
 	iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );	
@@ -224,7 +229,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	CHECK_GL_ERROR();
 
 	iFragmentShader[ECombineProgram] = new CFragmentShader();
-	iShaderProgram[ECombineProgram] = new CShaderProgram();
+	iShaderProgram[ECombineProgram] = new CShadingControl();
 
 	iFragmentShader[ECombineProgram]->LoadFromFile( "shader/combine.frag" );
 	iShaderProgram[ECombineProgram]->AddShader( iFragmentShader[ECombineProgram] );	
@@ -739,13 +744,13 @@ void CMyRenderer::RenderScene()
 		{
 			glDisable( GL_TEXTURE_2D );
 			glEnable( GL_LIGHTING );
-			CShaderProgram::DisableAll();
+			CShadingControl::DisableAll();
 			RenderObjects();
 			break;
 		}
 	}
 	CHECK_GL_ERROR();
-	CShaderProgram::DisableAll();	
+	CShadingControl::DisableAll();	
 	CalculateFramesPerSecond();
 	DrawText(); 
 	CHECK_GL_ERROR();	

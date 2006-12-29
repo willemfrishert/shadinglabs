@@ -1,13 +1,13 @@
-#include "CShaderProgram.h"
+#include "CShadingControl.h"
 
 const int KLogLengthMax=500;
 
-CShaderProgram::CShaderProgram()
+CShadingControl::CShadingControl()
 {
 	iShaderProgramId = glCreateProgram();
 }
 
-CShaderProgram::~CShaderProgram()
+CShadingControl::~CShadingControl()
 {
 	this->Enable( false );
 	for (unsigned int i=0;i<iShaders.size();i++)
@@ -22,12 +22,12 @@ CShaderProgram::~CShaderProgram()
 	CHECK_GL_ERROR();
 }
 
-void CShaderProgram::AddShader(CShader* Shader)
+void CShadingControl::AddShader(CShader* Shader)
 {
 	iShaders.push_back(Shader); 
 }
 
-bool CShaderProgram::Rebuild()
+bool CShadingControl::Rebuild()
 {
 	// Clean
 	GLint linked;
@@ -43,11 +43,11 @@ bool CShaderProgram::Rebuild()
 }
 
 
-bool CShaderProgram::Build()
+bool CShadingControl::Build()
 {
 	bool status = true;
 
-	for (int i=0;i<iShaders.size();i++)
+	for (unsigned int i=0;i<iShaders.size();i++)
 	{
 		status = status && iShaders[i]->Compile();
 
@@ -100,7 +100,7 @@ bool CShaderProgram::Build()
 	return status;
 }
 
-bool CShaderProgram::LinkerLog()
+bool CShadingControl::LinkerLog()
 {    
 	GLint status = 0;
 	glGetProgramiv( iShaderProgramId, GL_LINK_STATUS, &status );
@@ -118,7 +118,7 @@ bool CShaderProgram::LinkerLog()
 	return ( 0 == status ) ? false : true;
 }
 
-bool CShaderProgram::Enable(bool aState)
+bool CShadingControl::Enable(bool aState)
 {
 	GLint status=0;
 
@@ -153,25 +153,25 @@ bool CShaderProgram::Enable(bool aState)
 			CHECK_GL_ERROR();
 		}
 	}
-	return status;
+	return (status = GL_FALSE ? false : true);
 }
 
-void CShaderProgram::DisableAll()
+void CShadingControl::DisableAll()
 {
 	glUseProgram(0);
 }
 
-void CShaderProgram::AddUniformObject(ShaderUniformObject* obj)
+void CShadingControl::AddUniformObject(ShaderUniformObject* obj)
 {
 	uniformObjects.push_back( obj );
 }
 
-void CShaderProgram::AddAttributeObject(ShaderAttributeObject* obj)
+void CShadingControl::AddAttributeObject(ShaderAttributeObject* obj)
 {
 	attributeObjects.push_back( obj );
 }
 
-void CShaderProgram::UpdateProgramUniformObjects()
+void CShadingControl::UpdateProgramUniformObjects()
 {
 	list< ShaderUniformObject* >::const_iterator uniformIter = this->uniformObjects.begin();
 
