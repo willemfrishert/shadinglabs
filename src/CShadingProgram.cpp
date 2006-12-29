@@ -1,13 +1,13 @@
-#include "CShadingControl.h"
+#include "CShaderProgram.h"
 
 const int KLogLengthMax=500;
 
-CShadingControl::CShadingControl()
+CShadingProgram::CShadingProgram()
 {
 	iShaderProgramId = glCreateProgram();
 }
 
-CShadingControl::~CShadingControl()
+CShadingProgram::~CShadingProgram()
 {
 	this->Enable( false );
 	for (unsigned int i=0;i<iShaders.size();i++)
@@ -22,12 +22,12 @@ CShadingControl::~CShadingControl()
 	CHECK_GL_ERROR();
 }
 
-void CShadingControl::AddShader(CShader* Shader)
+void CShadingProgram::AddShader(CShader* Shader)
 {
 	iShaders.push_back(Shader); 
 }
 
-bool CShadingControl::Rebuild()
+bool CShadingProgram::Rebuild()
 {
 	// Clean
 	GLint linked;
@@ -43,7 +43,7 @@ bool CShadingControl::Rebuild()
 }
 
 
-bool CShadingControl::Build()
+bool CShadingProgram::Build()
 {
 	bool status = true;
 
@@ -100,7 +100,7 @@ bool CShadingControl::Build()
 	return status;
 }
 
-bool CShadingControl::LinkerLog()
+bool CShadingProgram::LinkerLog()
 {    
 	GLint status = 0;
 	glGetProgramiv( iShaderProgramId, GL_LINK_STATUS, &status );
@@ -118,7 +118,7 @@ bool CShadingControl::LinkerLog()
 	return ( 0 == status ) ? false : true;
 }
 
-bool CShadingControl::Enable(bool aState)
+bool CShadingProgram::Enable(bool aState)
 {
 	GLint status=0;
 
@@ -156,22 +156,22 @@ bool CShadingControl::Enable(bool aState)
 	return (status = GL_FALSE ? false : true);
 }
 
-void CShadingControl::DisableAll()
+void CShadingProgram::DisableAll()
 {
 	glUseProgram(0);
 }
 
-void CShadingControl::AddUniformObject(ShaderUniformObject* obj)
+void CShadingProgram::AddUniformObject(ShaderUniformObject* obj)
 {
 	uniformObjects.push_back( obj );
 }
 
-void CShadingControl::AddAttributeObject(ShaderAttributeObject* obj)
+void CShadingProgram::AddAttributeObject(ShaderAttributeObject* obj)
 {
 	attributeObjects.push_back( obj );
 }
 
-void CShadingControl::UpdateProgramUniformObjects()
+void CShadingProgram::UpdateProgramUniformObjects()
 {
 	list< ShaderUniformObject* >::const_iterator uniformIter = this->uniformObjects.begin();
 

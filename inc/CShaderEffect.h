@@ -1,11 +1,13 @@
 #pragma once
 
+#include "CMyRenderer.h"
+
 class CShaderEffect
 {
 	//METHODS
 public:
 	CShaderEffect(CMyRenderer* aRenderer);
-	virtual CShaderEffect();
+	virtual ~CShaderEffect();
 	virtual void use() = 0;
 
 protected:

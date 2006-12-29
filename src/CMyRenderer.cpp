@@ -117,7 +117,7 @@ void CMyRenderer::InitPhongShading()
 {
 	iVertexShader[EPhongProgram] = new CVertexShader();
 	iFragmentShader[EPhongProgram] = new CFragmentShader();
-	iShaderProgram[EPhongProgram] = new CShadingControl();
+	iShaderProgram[EPhongProgram] = new CShadingProgram();
 
 	iVertexShader[EPhongProgram]->LoadFromFile( "shader/phong.vert" );
 	iShaderProgram[EPhongProgram]->AddShader( iVertexShader[EPhongProgram] );
@@ -157,7 +157,7 @@ void CMyRenderer::InitCartoonShadering()
 
 	iVertexShader[ECartoonProgram] = new CVertexShader();
 	iFragmentShader[ECartoonProgram] = new CFragmentShader();
-	iShaderProgram[ECartoonProgram] = new CShadingControl();
+	iShaderProgram[ECartoonProgram] = new CShadingProgram();
 
 	iVertexShader[ECartoonProgram]->LoadFromFile( "shader/toontexture.vert" );
 	iShaderProgram[ECartoonProgram]->AddShader( iVertexShader[ECartoonProgram] );
@@ -186,7 +186,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	bool result = false;
 
 	iFragmentShader[EBrightPassProgram] = new CFragmentShader();
-	iShaderProgram[EBrightPassProgram] = new CShadingControl();
+	iShaderProgram[EBrightPassProgram] = new CShadingProgram();
 
 	iFragmentShader[EBrightPassProgram]->LoadFromFile( "shader/brightpass.frag" );
 	iShaderProgram[EBrightPassProgram]->AddShader( iFragmentShader[EBrightPassProgram] );
@@ -204,7 +204,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	CHECK_GL_ERROR();
 
 	iFragmentShader[EBlurProgram] = new CFragmentShader();
-	iShaderProgram[EBlurProgram] = new CShadingControl();
+	iShaderProgram[EBlurProgram] = new CShadingProgram();
 
 	iFragmentShader[EBlurProgram]->LoadFromFile( "shader/blur.frag" );
 	iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );	
@@ -229,7 +229,7 @@ void CMyRenderer::InitBloomShadingEffect()
 	CHECK_GL_ERROR();
 
 	iFragmentShader[ECombineProgram] = new CFragmentShader();
-	iShaderProgram[ECombineProgram] = new CShadingControl();
+	iShaderProgram[ECombineProgram] = new CShadingProgram();
 
 	iFragmentShader[ECombineProgram]->LoadFromFile( "shader/combine.frag" );
 	iShaderProgram[ECombineProgram]->AddShader( iFragmentShader[ECombineProgram] );	
@@ -744,13 +744,13 @@ void CMyRenderer::RenderScene()
 		{
 			glDisable( GL_TEXTURE_2D );
 			glEnable( GL_LIGHTING );
-			CShadingControl::DisableAll();
+			CShadingProgram::DisableAll();
 			RenderObjects();
 			break;
 		}
 	}
 	CHECK_GL_ERROR();
-	CShadingControl::DisableAll();	
+	CShadingProgram::DisableAll();	
 	CalculateFramesPerSecond();
 	DrawText(); 
 	CHECK_GL_ERROR();	
