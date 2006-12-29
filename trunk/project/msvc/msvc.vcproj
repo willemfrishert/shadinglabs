@@ -209,6 +209,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\CShaderBloom.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CShaderCartoon.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CShaderEffect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\CShaderPhong.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\CShadingControl.cpp"
 				>
 			</File>
@@ -288,6 +304,22 @@
 			</File>
 			<File
 				RelativePath="..\..\inc\CShader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\inc\CShaderBloom.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\inc\CShaderCartoon.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\inc\CShaderEffect.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\inc\CShaderPhong.h"
 				>
 			</File>
 			<File
