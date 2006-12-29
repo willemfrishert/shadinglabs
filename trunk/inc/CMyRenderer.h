@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Basic.h"
-#include "CShaderProgram.h"
+#include "CShadingControl.h"
 #include "CVertexShader.h"
 #include "CFragmentShader.h"
 #include "TFramebufferObject.h"
@@ -160,9 +160,9 @@ class CMyRenderer
 		
 		GLuint iTextureId[KNumberOfTextures];
     
-		CShaderProgram* iShaderProgram[KNumberOfShadingPrograms];
-		CVertexShader* iVertexShader[KNumberOfShadingPrograms];
-		CFragmentShader* iFragmentShader[KNumberOfShadingPrograms];
+		CShadingControl* iShaderProgram[KNumberOfShadingPrograms];
+		CShader* iVertexShader[KNumberOfShadingPrograms];
+		CShader* iFragmentShader[KNumberOfShadingPrograms];
 		
 		TFramebufferObject* iFrameBufferObject;
 		

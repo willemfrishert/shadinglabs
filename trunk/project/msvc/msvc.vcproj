@@ -209,7 +209,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\CShaderProgram.cpp"
+				RelativePath="..\..\src\CShadingControl.cpp"
 				>
 			</File>
 			<File
@@ -291,7 +291,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\inc\CShaderProgram.h"
+				RelativePath="..\..\inc\CShadingControl.h"
 				>
 			</File>
 			<File

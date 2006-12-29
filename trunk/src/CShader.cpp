@@ -1,45 +1,31 @@
-// ************************************************************************
-// Shader Program : Manage Shader (Vertex/Fragment)
-// ************************************************************************
 #include "CShader.h"
-
-char* aGLSLErrorString[] = {
-	"(e0000) GLSL not enabled",
-	"(e0001) not a valid program object",
-	"(e0002) not a valid object",
-	"(e0003) out of memory",
-	"(e0004) unknown compiler error"};
-//----------------------------------------------------------------------------- 
 
 CShader::CShader()
 {
-	compiler_log = 0;
-	is_compiled = false;
+	iCompiled = false;
 	iShaderId = 0;
-	ShaderSource = 0;
-	_memalloc = false;
+	iShaderSource = 0;
+	iMemoryAllocated = false;
 	
 }
-
-//----------------------------------------------------------------------------- 
 
 CShader::~CShader()
 {
-	if (compiler_log!=0) free(compiler_log);
-	if (ShaderSource!=0)   
+	if (iShaderSource!=0)   
+	{
+		if (iMemoryAllocated)
 		{
-		if (_memalloc)
-			delete[] ShaderSource;  // free ASCII Source
+			delete[] iShaderSource;  // free ASCII Source
 		}
+	}
 	
-	if (is_compiled)
-		{ 
+	if (iCompiled)
+	{ 
 		glDeleteShader( iShaderId );
 		CHECK_GL_ERROR();
-		}
+	}
 }
 
-//----------------------------------------------------------------------------- 
 unsigned long getFileLength(ifstream& file)
 {
 	if(!file.good()) return 0;
@@ -51,9 +37,6 @@ unsigned long getFileLength(ifstream& file)
 	return len;
 }
 
-
-//----------------------------------------------------------------------------- 
-
 int CShader::LoadFromFile(char* filename)
 {
 	ifstream file;
@@ -64,51 +47,47 @@ int CShader::LoadFromFile(char* filename)
 	
 	if (len==0) return -2;   // "Empty File" 
 	
-	if (ShaderSource!=0)    // there is already a source loaded, free it!
+	if (iShaderSource!=0)    // there is already a source loaded, free it!
     {
-		if (_memalloc)
-			delete[] ShaderSource;
+		if (iMemoryAllocated)
+		{
+			delete[] iShaderSource;
+		}
     }
 	
-	ShaderSource = (GLubyte*) new char[len+1];
-	if (ShaderSource == 0) return -3;   // can't reserve memory
-	_memalloc = true;
+	iShaderSource = (GLubyte*) new char[len+1];
+	if (iShaderSource == 0) return -3;   // can't reserve memory
+	iMemoryAllocated = true;
 	
 	
-	ShaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
+	iShaderSource[len] = 0;  // len isn't always strlen cause some characters are stripped in ascii read...
 													// it is important to 0-terminate the real length later, len is just max possible value...
 	
 	unsigned int i=0;
 	while (file.good())
     {
-		ShaderSource[i++] = file.get();       // get character from file
+		iShaderSource[i++] = file.get();       // get character from file
 		if (i>len) i=len;   // coding guidelines...
     }
 	
-	ShaderSource[i] = 0;  // 0 terminate it.
+	iShaderSource[i] = 0;  // 0 terminate it.
 	
 	file.close();
 	
 	return 0;
 }
 
-//----------------------------------------------------------------------------- 
-
 void CShader::LoadFromMemory(const char* program)
 {
-	if (ShaderSource!=0)    // there is already a source loaded, free it!
+	if (iShaderSource!=0)    // there is already a source loaded, free it!
     {
-		if (_memalloc)
-			delete[] ShaderSource;
+		if (iMemoryAllocated)
+			delete[] iShaderSource;
     }
-	_memalloc = false;
-	ShaderSource = (GLubyte*) program;
+	iMemoryAllocated = false;
+	iShaderSource = (GLubyte*) program;
 	
 }
-
-
-// ----------------------------------------------------
-// Compiler Log: Ausgabe der Compiler Meldungen in String
 
 bool CShader::CompilerLog(void)
 {    	
@@ -120,7 +99,7 @@ bool CShader::CompilerLog(void)
 	string typeString = (GL_VERTEX_SHADER==type)?"Vertex":"Fragment";
 	
 	if( GL_FALSE == status )
-		{
+	{
 		const int KLengthMax=500;
 		char infoLog[KLengthMax];
 		
@@ -128,31 +107,33 @@ bool CShader::CompilerLog(void)
 		cout << " - "<< typeString <<" Shader compilation FAILED:\n" << infoLog << endl;
 		
 		//	exit(-1);
-		}
+	}
 	else
-		{
+	{
 		cout << " - "<< typeString <<" Shader compilation OK.\n";
-		}
-	return (0==status)? false:true;
+	}
+	return ( GL_FALSE == status )? false:true;
 }
-
-// ----------------------------------------------------
 
 bool CShader::Compile()
 {
 	
 	bool status = true;
 	
-  if (ShaderSource==0) return false;
-	
-  GLint	length = (GLint) strlen((const char*)ShaderSource);
-  glShaderSource(iShaderId, 1, (const GLchar **)&ShaderSource, &length);
-  CHECK_GL_ERROR();
-	
-  glCompileShader(iShaderId); 
-  CHECK_GL_ERROR();
+	if (iShaderSource==0) return false;
+
+	GLint length = (GLint) strlen((const char*)iShaderSource);
+	glShaderSource(iShaderId, 1, (const GLchar **)&iShaderSource, &length);
+	CHECK_GL_ERROR();
+
+	glCompileShader(iShaderId); 
+	CHECK_GL_ERROR();
 
 	status = CompilerLog();
 	
+	if(status)
+	{
+		iCompiled = true;
+	}
 	return status;
 }

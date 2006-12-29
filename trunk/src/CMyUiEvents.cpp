@@ -47,6 +47,7 @@ void CMyUiEvents::ProcessNormalKeys(unsigned char aKey, int aX, int aY)
 	{
 	case 3:             /* Ctrl-C */
 	case 27:            /* ESC */
+		delete iRenderer;
 		exit(0);
 		break;
 	case ']':
