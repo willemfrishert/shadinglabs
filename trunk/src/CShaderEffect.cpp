@@ -5,7 +5,7 @@ CShaderEffect::CShaderEffect(CMyRenderer* aRenderer)
 {
 
 }
-CShaderEffect::CShaderEffect()
+CShaderEffect::~CShaderEffect()
 {
 	iRenderer = NULL;
 }
