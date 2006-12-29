@@ -7,11 +7,13 @@
 #include "TFramebufferObject.h"
 #include "ShaderUniformValue.h"
 #include "CMesh.h"
+#include "TTexture.h"
 
 const int KNumberOfTextures=2;
 const int KNumberOfShadingPrograms=5;
 
 const int KNumberOfColorMaps=5;
+const int KNUmberOfDepthMaps=1;
 const int KTextureWidth=512;
 const int KTextureHeight = 512;
 const int KTextureBorder=0;
@@ -166,14 +168,17 @@ class CMyRenderer
 		
 		enum TTextureId
 		{
-			EPhongTextureId = 0,
-			EBrightPassTextureId,
-			EFirstBlurTextureId,
-			ESecondBlurTextureId,
-			EThirdBlurTextureId
+			EDepthTexture = 0,
+			EPhongTexture,
+			EBrightPassTexture,
+			EFirstBlurTexture,
+			ESecondBlurTexture,
+			EThirdBlurTexture
 		};		
-		GLuint iColorMapId[KNumberOfColorMaps];
-		GLuint iDepthMapId;
+		//GLuint iColorMapId[KNumberOfColorMaps];
+		//GLuint iDepthMapId;
+
+		TTexture* iTextures[KNumberOfColorMaps+KNUmberOfDepthMaps];
 		
 		enum TShading
 		{
