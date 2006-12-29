@@ -1,0 +1,418 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		43171FFA0B2A11E800AFEC5C /* 3ds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43171FF70B2A11E800AFEC5C /* 3ds.cpp */; };
+		43171FFB0B2A11E800AFEC5C /* ati_3ds.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43171FF80B2A11E800AFEC5C /* ati_3ds.cpp */; };
+		43171FFC0B2A11E800AFEC5C /* CMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43171FF90B2A11E800AFEC5C /* CMesh.cpp */; };
+		431720270B2A138700AFEC5C /* index_t.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 431720260B2A138700AFEC5C /* index_t.cpp */; };
+		4317202B0B2A148F00AFEC5C /* TVertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4317202A0B2A148F00AFEC5C /* TVertex.cpp */; };
+		431720C50B2A5CA600AFEC5C /* 3ds in Resources */ = {isa = PBXBuildFile; fileRef = 431720B90B2A5CA600AFEC5C /* 3ds */; };
+		4324072C0ACD5FBC00F3672D /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4324072B0ACD5FBC00F3672D /* Main.cpp */; };
+		432407400ACD5FC500F3672D /* CMyRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 434288230AC5948300916D86 /* CMyRenderer.cpp */; };
+		432407B80ACD91CC00F3672D /* CMyUiEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432407B60ACD91CC00F3672D /* CMyUiEvents.cpp */; };
+		432407B90ACD91CC00F3672D /* TTextFileHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432407B70ACD91CC00F3672D /* TTextFileHandler.cpp */; };
+		4324095F0ACDB66C00F3672D /* CFragmentShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4324095E0ACDB66C00F3672D /* CFragmentShader.cpp */; };
+		432409790ACDB6C800F3672D /* CShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432409750ACDB6C800F3672D /* CShaderProgram.cpp */; };
+		4324097A0ACDB6C800F3672D /* CShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432409760ACDB6C800F3672D /* CShader.cpp */; };
+		4324097B0ACDB6C800F3672D /* CVertexShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 432409770ACDB6C800F3672D /* CVertexShader.cpp */; };
+		4334BFFC0ADDB923005783C4 /* textures in Resources */ = {isa = PBXBuildFile; fileRef = 4334BFF90ADDB923005783C4 /* textures */; };
+		4334C0150ADDBD58005783C4 /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4334C0140ADDBD58005783C4 /* tga.cpp */; };
+		4335B5EE0AEE91DD00C74FCD /* brightpass.frag in Resources */ = {isa = PBXBuildFile; fileRef = 4335B5EC0AEE91DD00C74FCD /* brightpass.frag */; };
+		4335B5EF0AEE91DD00C74FCD /* brightpass.vert in Resources */ = {isa = PBXBuildFile; fileRef = 4335B5ED0AEE91DD00C74FCD /* brightpass.vert */; };
+		434288C20AC6220F00916D86 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434288C00AC6220F00916D86 /* GLUT.framework */; };
+		434288C30AC6220F00916D86 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 434288C10AC6220F00916D86 /* OpenGL.framework */; };
+		436D7E100B263D9500469652 /* ShaderAttributeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 436D7E0E0B263D9500469652 /* ShaderAttributeObject.cpp */; };
+		436D7E110B263D9500469652 /* ShaderUniformObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 436D7E0F0B263D9500469652 /* ShaderUniformObject.cpp */; };
+		43791AB20AE299B80004AE13 /* fragment_shader.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43791AB00AE299B80004AE13 /* fragment_shader.frag */; };
+		43791AB30AE299B80004AE13 /* vertex_shader.vert in Resources */ = {isa = PBXBuildFile; fileRef = 43791AB10AE299B80004AE13 /* vertex_shader.vert */; };
+		437940300AE6E58300D5608C /* TFramebufferObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4379402F0AE6E58300D5608C /* TFramebufferObject.cpp */; };
+		43C365290AD12A2C00FED116 /* blur.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365200AD12A2C00FED116 /* blur.frag */; };
+		43C3652A0AD12A2C00FED116 /* combine.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365210AD12A2C00FED116 /* combine.frag */; };
+		43C3652B0AD12A2C00FED116 /* dof.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365220AD12A2C00FED116 /* dof.frag */; };
+		43C3652C0AD12A2C00FED116 /* phong.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365230AD12A2C00FED116 /* phong.frag */; };
+		43C3652D0AD12A2C00FED116 /* phong.vert in Resources */ = {isa = PBXBuildFile; fileRef = 43C365240AD12A2C00FED116 /* phong.vert */; };
+		43C3652E0AD12A2C00FED116 /* toon.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365250AD12A2C00FED116 /* toon.frag */; };
+		43C3652F0AD12A2C00FED116 /* toon.vert in Resources */ = {isa = PBXBuildFile; fileRef = 43C365260AD12A2C00FED116 /* toon.vert */; };
+		43C365300AD12A2C00FED116 /* toon2.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43C365270AD12A2C00FED116 /* toon2.frag */; };
+		43C365310AD12A2C00FED116 /* transform.vert in Resources */ = {isa = PBXBuildFile; fileRef = 43C365280AD12A2C00FED116 /* transform.vert */; };
+		43CFF1410ADE71FB004C25F3 /* toontexture.frag in Resources */ = {isa = PBXBuildFile; fileRef = 43CFF0A80ADDC000004C25F3 /* toontexture.frag */; };
+		43CFF1420ADE71FB004C25F3 /* toontexture.vert in Resources */ = {isa = PBXBuildFile; fileRef = 43CFF0A90ADDC01D004C25F3 /* toontexture.vert */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		43171FF40B2A11CC00AFEC5C /* 3ds.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = 3ds.h; path = ../../inc/3ds.h; sourceTree = SOURCE_ROOT; };
+		43171FF50B2A11CC00AFEC5C /* ati_3ds.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ati_3ds.h; path = ../../inc/ati_3ds.h; sourceTree = SOURCE_ROOT; };
+		43171FF60B2A11CC00AFEC5C /* CMesh.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CMesh.h; path = ../../inc/CMesh.h; sourceTree = SOURCE_ROOT; };
+		43171FF70B2A11E800AFEC5C /* 3ds.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = 3ds.cpp; path = ../../src/3ds.cpp; sourceTree = SOURCE_ROOT; };
+		43171FF80B2A11E800AFEC5C /* ati_3ds.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ati_3ds.cpp; path = ../../src/ati_3ds.cpp; sourceTree = SOURCE_ROOT; };
+		43171FF90B2A11E800AFEC5C /* CMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CMesh.cpp; path = ../../src/CMesh.cpp; sourceTree = SOURCE_ROOT; };
+		431720160B2A135400AFEC5C /* index_t.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = index_t.h; path = ../../inc/index_t.h; sourceTree = SOURCE_ROOT; };
+		431720260B2A138700AFEC5C /* index_t.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = index_t.cpp; path = ../../src/index_t.cpp; sourceTree = SOURCE_ROOT; };
+		4317202A0B2A148F00AFEC5C /* TVertex.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TVertex.cpp; path = ../../src/TVertex.cpp; sourceTree = SOURCE_ROOT; };
+		4317202C0B2A14D000AFEC5C /* TVertex.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TVertex.h; path = ../../inc/TVertex.h; sourceTree = SOURCE_ROOT; };
+		4317202E0B2A14F400AFEC5C /* TVector2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TVector2.h; path = ../../inc/TVector2.h; sourceTree = SOURCE_ROOT; };
+		4317202F0B2A14F400AFEC5C /* TVector3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TVector3.h; path = ../../inc/TVector3.h; sourceTree = SOURCE_ROOT; };
+		431720B90B2A5CA600AFEC5C /* 3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 3ds; path = ../../3ds; sourceTree = SOURCE_ROOT; };
+		4324072B0ACD5FBC00F3672D /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../../src/Main.cpp; sourceTree = SOURCE_ROOT; };
+		432407B40ACD919C00F3672D /* TTextFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TTextFileHandler.h; path = ../../inc/TTextFileHandler.h; sourceTree = SOURCE_ROOT; };
+		432407B50ACD91A200F3672D /* CMyUiEvents.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CMyUiEvents.h; path = ../../inc/CMyUiEvents.h; sourceTree = SOURCE_ROOT; };
+		432407B60ACD91CC00F3672D /* CMyUiEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CMyUiEvents.cpp; path = ../../src/CMyUiEvents.cpp; sourceTree = SOURCE_ROOT; };
+		432407B70ACD91CC00F3672D /* TTextFileHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TTextFileHandler.cpp; path = ../../src/TTextFileHandler.cpp; sourceTree = SOURCE_ROOT; };
+		4324095D0ACDB65A00F3672D /* CFragmentShader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CFragmentShader.h; path = ../../inc/CFragmentShader.h; sourceTree = SOURCE_ROOT; };
+		4324095E0ACDB66C00F3672D /* CFragmentShader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CFragmentShader.cpp; path = ../../src/CFragmentShader.cpp; sourceTree = SOURCE_ROOT; };
+		432409750ACDB6C800F3672D /* CShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CShaderProgram.cpp; path = ../../src/CShaderProgram.cpp; sourceTree = SOURCE_ROOT; };
+		432409760ACDB6C800F3672D /* CShader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CShader.cpp; path = ../../src/CShader.cpp; sourceTree = SOURCE_ROOT; };
+		432409770ACDB6C800F3672D /* CVertexShader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CVertexShader.cpp; path = ../../src/CVertexShader.cpp; sourceTree = SOURCE_ROOT; };
+		4324097D0ACDB6E100F3672D /* CShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CShaderProgram.h; path = ../../inc/CShaderProgram.h; sourceTree = SOURCE_ROOT; };
+		4324097E0ACDB6E100F3672D /* CShader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CShader.h; path = ../../inc/CShader.h; sourceTree = SOURCE_ROOT; };
+		4324097F0ACDB6E100F3672D /* CVertexShader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CVertexShader.h; path = ../../inc/CVertexShader.h; sourceTree = SOURCE_ROOT; };
+		4334BFF90ADDB923005783C4 /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = textures; sourceTree = "<group>"; };
+		4334C0140ADDBD58005783C4 /* tga.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = tga.cpp; path = ../../src/tga.cpp; sourceTree = SOURCE_ROOT; };
+		4334C0160ADDBD67005783C4 /* tga.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = tga.h; path = ../../inc/tga.h; sourceTree = SOURCE_ROOT; };
+		4335B5EC0AEE91DD00C74FCD /* brightpass.frag */ = {isa = PBXFileReference; fileEncoding = 30; languageSpecificationIdentifier = glsl; lastKnownFileType = sourcecode.vert; name = brightpass.frag; path = ../../shader/brightpass.frag; sourceTree = SOURCE_ROOT; };
+		4335B5ED0AEE91DD00C74FCD /* brightpass.vert */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.frag; name = brightpass.vert; path = ../../shader/brightpass.vert; sourceTree = SOURCE_ROOT; };
+		434288230AC5948300916D86 /* CMyRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CMyRenderer.cpp; path = ../../src/CMyRenderer.cpp; sourceTree = SOURCE_ROOT; };
+		434288290AC5949400916D86 /* Basic.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Basic.h; path = ../../inc/Basic.h; sourceTree = SOURCE_ROOT; };
+		4342882A0AC5949400916D86 /* CMyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CMyRenderer.h; path = ../../inc/CMyRenderer.h; sourceTree = SOURCE_ROOT; };
+		434288C00AC6220F00916D86 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = /System/Library/Frameworks/GLUT.framework; sourceTree = "<absolute>"; };
+		434288C10AC6220F00916D86 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		436D7E0E0B263D9500469652 /* ShaderAttributeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ShaderAttributeObject.cpp; path = ../../src/ShaderAttributeObject.cpp; sourceTree = SOURCE_ROOT; };
+		436D7E0F0B263D9500469652 /* ShaderUniformObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ShaderUniformObject.cpp; path = ../../src/ShaderUniformObject.cpp; sourceTree = SOURCE_ROOT; };
+		436D7E120B263DA400469652 /* ShaderAttributeObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ShaderAttributeObject.h; path = ../../inc/ShaderAttributeObject.h; sourceTree = SOURCE_ROOT; };
+		436D7E130B263DA400469652 /* ShaderUniformObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ShaderUniformObject.h; path = ../../inc/ShaderUniformObject.h; sourceTree = SOURCE_ROOT; };
+		436D7E140B263DA400469652 /* ShaderUniformValue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ShaderUniformValue.h; path = ../../inc/ShaderUniformValue.h; sourceTree = SOURCE_ROOT; };
+		436D7E150B263DA400469652 /* ShaderUniformVector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ShaderUniformVector.h; path = ../../inc/ShaderUniformVector.h; sourceTree = SOURCE_ROOT; };
+		43791AB00AE299B80004AE13 /* fragment_shader.frag */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = fragment_shader.frag; path = ../../shader/fragment_shader.frag; sourceTree = SOURCE_ROOT; };
+		43791AB10AE299B80004AE13 /* vertex_shader.vert */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = vertex_shader.vert; path = ../../shader/vertex_shader.vert; sourceTree = SOURCE_ROOT; };
+		4379402F0AE6E58300D5608C /* TFramebufferObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = TFramebufferObject.cpp; path = ../../src/TFramebufferObject.cpp; sourceTree = SOURCE_ROOT; };
+		437940310AE6E59100D5608C /* TFramebufferObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = TFramebufferObject.h; path = ../../inc/TFramebufferObject.h; sourceTree = SOURCE_ROOT; };
+		43C365200AD12A2C00FED116 /* blur.frag */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = blur.frag; path = ../../shader/blur.frag; sourceTree = SOURCE_ROOT; };
+		43C365210AD12A2C00FED116 /* combine.frag */ = {isa = PBXFileReference; fileEncoding = 30; languageSpecificationIdentifier = glsl; lastKnownFileType = text; name = combine.frag; path = ../../shader/combine.frag; sourceTree = SOURCE_ROOT; };
+		43C365220AD12A2C00FED116 /* dof.frag */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = dof.frag; path = ../../shader/dof.frag; sourceTree = SOURCE_ROOT; };
+		43C365230AD12A2C00FED116 /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 30; languageSpecificationIdentifier = glsl; lastKnownFileType = sourcecode.vert; name = phong.frag; path = ../../shader/phong.frag; sourceTree = SOURCE_ROOT; };
+		43C365240AD12A2C00FED116 /* phong.vert */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.frag; name = phong.vert; path = ../../shader/phong.vert; sourceTree = SOURCE_ROOT; };
+		43C365250AD12A2C00FED116 /* toon.frag */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = toon.frag; path = ../../shader/toon.frag; sourceTree = SOURCE_ROOT; };
+		43C365260AD12A2C00FED116 /* toon.vert */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = toon.vert; path = ../../shader/toon.vert; sourceTree = SOURCE_ROOT; };
+		43C365270AD12A2C00FED116 /* toon2.frag */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = toon2.frag; path = ../../shader/toon2.frag; sourceTree = SOURCE_ROOT; };
+		43C365280AD12A2C00FED116 /* transform.vert */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = transform.vert; path = ../../shader/transform.vert; sourceTree = SOURCE_ROOT; };
+		43CFF0A80ADDC000004C25F3 /* toontexture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = toontexture.frag; path = ../../shader/toontexture.frag; sourceTree = SOURCE_ROOT; };
+		43CFF0A90ADDC01D004C25F3 /* toontexture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = toontexture.vert; path = ../../shader/toontexture.vert; sourceTree = SOURCE_ROOT; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Shaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shaders.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				434288C20AC6220F00916D86 /* GLUT.framework in Frameworks */,
+				434288C30AC6220F00916D86 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Shaders.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* repellingforce */ = {
+			isa = PBXGroup;
+			children = (
+				431720B90B2A5CA600AFEC5C /* 3ds */,
+				4334BFBD0ADDB82C005783C4 /* textures */,
+				43C365340AD12A3600FED116 /* Shaders */,
+				434288180AC5943700916D86 /* inc */,
+				434288190AC5944400916D86 /* src */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = repellingforce;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				434288C00AC6220F00916D86 /* GLUT.framework */,
+				434288C10AC6220F00916D86 /* OpenGL.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4334BFBD0ADDB82C005783C4 /* textures */ = {
+			isa = PBXGroup;
+			children = (
+				4334BFF90ADDB923005783C4 /* textures */,
+			);
+			includeInIndex = 1;
+			name = textures;
+			path = ../../textures;
+			sourceTree = SOURCE_ROOT;
+		};
+		434288180AC5943700916D86 /* inc */ = {
+			isa = PBXGroup;
+			children = (
+				434288290AC5949400916D86 /* Basic.h */,
+				4342882A0AC5949400916D86 /* CMyRenderer.h */,
+				432407B50ACD91A200F3672D /* CMyUiEvents.h */,
+				432407B40ACD919C00F3672D /* TTextFileHandler.h */,
+				4324095D0ACDB65A00F3672D /* CFragmentShader.h */,
+				4324097D0ACDB6E100F3672D /* CShaderProgram.h */,
+				4324097E0ACDB6E100F3672D /* CShader.h */,
+				4324097F0ACDB6E100F3672D /* CVertexShader.h */,
+				4334C0160ADDBD67005783C4 /* tga.h */,
+				437940310AE6E59100D5608C /* TFramebufferObject.h */,
+				436D7E120B263DA400469652 /* ShaderAttributeObject.h */,
+				436D7E130B263DA400469652 /* ShaderUniformObject.h */,
+				436D7E140B263DA400469652 /* ShaderUniformValue.h */,
+				436D7E150B263DA400469652 /* ShaderUniformVector.h */,
+				43171FF40B2A11CC00AFEC5C /* 3ds.h */,
+				43171FF50B2A11CC00AFEC5C /* ati_3ds.h */,
+				43171FF60B2A11CC00AFEC5C /* CMesh.h */,
+				431720160B2A135400AFEC5C /* index_t.h */,
+				4317202C0B2A14D000AFEC5C /* TVertex.h */,
+				4317202E0B2A14F400AFEC5C /* TVector2.h */,
+				4317202F0B2A14F400AFEC5C /* TVector3.h */,
+			);
+			name = inc;
+			sourceTree = "<group>";
+		};
+		434288190AC5944400916D86 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				4324072B0ACD5FBC00F3672D /* Main.cpp */,
+				434288230AC5948300916D86 /* CMyRenderer.cpp */,
+				432407B60ACD91CC00F3672D /* CMyUiEvents.cpp */,
+				432407B70ACD91CC00F3672D /* TTextFileHandler.cpp */,
+				4324095E0ACDB66C00F3672D /* CFragmentShader.cpp */,
+				432409750ACDB6C800F3672D /* CShaderProgram.cpp */,
+				432409760ACDB6C800F3672D /* CShader.cpp */,
+				432409770ACDB6C800F3672D /* CVertexShader.cpp */,
+				4334C0140ADDBD58005783C4 /* tga.cpp */,
+				4379402F0AE6E58300D5608C /* TFramebufferObject.cpp */,
+				436D7E0E0B263D9500469652 /* ShaderAttributeObject.cpp */,
+				436D7E0F0B263D9500469652 /* ShaderUniformObject.cpp */,
+				43171FF70B2A11E800AFEC5C /* 3ds.cpp */,
+				43171FF80B2A11E800AFEC5C /* ati_3ds.cpp */,
+				43171FF90B2A11E800AFEC5C /* CMesh.cpp */,
+				431720260B2A138700AFEC5C /* index_t.cpp */,
+				4317202A0B2A148F00AFEC5C /* TVertex.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		43C365340AD12A3600FED116 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				43C365200AD12A2C00FED116 /* blur.frag */,
+				43C365210AD12A2C00FED116 /* combine.frag */,
+				43C365220AD12A2C00FED116 /* dof.frag */,
+				43C365230AD12A2C00FED116 /* phong.frag */,
+				43C365240AD12A2C00FED116 /* phong.vert */,
+				43C365250AD12A2C00FED116 /* toon.frag */,
+				43C365260AD12A2C00FED116 /* toon.vert */,
+				43C365270AD12A2C00FED116 /* toon2.frag */,
+				43C365280AD12A2C00FED116 /* transform.vert */,
+				43CFF0A80ADDC000004C25F3 /* toontexture.frag */,
+				43CFF0A90ADDC01D004C25F3 /* toontexture.vert */,
+				43791AB00AE299B80004AE13 /* fragment_shader.frag */,
+				43791AB10AE299B80004AE13 /* vertex_shader.vert */,
+				4335B5EC0AEE91DD00C74FCD /* brightpass.frag */,
+				4335B5ED0AEE91DD00C74FCD /* brightpass.vert */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Shaders */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Shaders" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shaders;
+			productInstallPath = "$(HOME)/Applications";
+			productName = repellingforce;
+			productReference = 8D1107320486CEB800E47090 /* Shaders.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Shaders" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* repellingforce */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Shaders */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43CFF1410ADE71FB004C25F3 /* toontexture.frag in Resources */,
+				43CFF1420ADE71FB004C25F3 /* toontexture.vert in Resources */,
+				43C365290AD12A2C00FED116 /* blur.frag in Resources */,
+				43C3652A0AD12A2C00FED116 /* combine.frag in Resources */,
+				43C3652B0AD12A2C00FED116 /* dof.frag in Resources */,
+				43C3652C0AD12A2C00FED116 /* phong.frag in Resources */,
+				43C3652D0AD12A2C00FED116 /* phong.vert in Resources */,
+				43C3652E0AD12A2C00FED116 /* toon.frag in Resources */,
+				43C3652F0AD12A2C00FED116 /* toon.vert in Resources */,
+				43C365300AD12A2C00FED116 /* toon2.frag in Resources */,
+				43C365310AD12A2C00FED116 /* transform.vert in Resources */,
+				4334BFFC0ADDB923005783C4 /* textures in Resources */,
+				43791AB20AE299B80004AE13 /* fragment_shader.frag in Resources */,
+				43791AB30AE299B80004AE13 /* vertex_shader.vert in Resources */,
+				4335B5EE0AEE91DD00C74FCD /* brightpass.frag in Resources */,
+				4335B5EF0AEE91DD00C74FCD /* brightpass.vert in Resources */,
+				431720C50B2A5CA600AFEC5C /* 3ds in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4324072C0ACD5FBC00F3672D /* Main.cpp in Sources */,
+				432407400ACD5FC500F3672D /* CMyRenderer.cpp in Sources */,
+				432407B80ACD91CC00F3672D /* CMyUiEvents.cpp in Sources */,
+				432407B90ACD91CC00F3672D /* TTextFileHandler.cpp in Sources */,
+				4324095F0ACDB66C00F3672D /* CFragmentShader.cpp in Sources */,
+				432409790ACDB6C800F3672D /* CShaderProgram.cpp in Sources */,
+				4324097A0ACDB6C800F3672D /* CShader.cpp in Sources */,
+				4324097B0ACDB6C800F3672D /* CVertexShader.cpp in Sources */,
+				4334C0150ADDBD58005783C4 /* tga.cpp in Sources */,
+				437940300AE6E58300D5608C /* TFramebufferObject.cpp in Sources */,
+				436D7E100B263D9500469652 /* ShaderAttributeObject.cpp in Sources */,
+				436D7E110B263D9500469652 /* ShaderUniformObject.cpp in Sources */,
+				43171FFA0B2A11E800AFEC5C /* 3ds.cpp in Sources */,
+				43171FFB0B2A11E800AFEC5C /* ati_3ds.cpp in Sources */,
+				43171FFC0B2A11E800AFEC5C /* CMesh.cpp in Sources */,
+				431720270B2A138700AFEC5C /* index_t.cpp in Sources */,
+				4317202B0B2A148F00AFEC5C /* TVertex.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Shaders;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Shaders;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Shaders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Shaders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
