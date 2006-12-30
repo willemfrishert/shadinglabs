@@ -1,7 +1,7 @@
 uniform sampler2D originalTex;
 uniform sampler2D blurTex1;
 uniform sampler2D blurTex2;
-//uniform sampler2D blurTex3;
+uniform sampler2D blurTex3;
 //uniform float mipmapBias;
 uniform int combineTextures;
 

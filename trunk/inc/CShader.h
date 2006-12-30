@@ -4,7 +4,7 @@
 
 class CShader
 {
-	friend class CShadingProgram;
+	friend class CShaderProgram;
 
 	public:
     CShader();

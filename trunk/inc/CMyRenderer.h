@@ -8,16 +8,9 @@
 #include "ShaderUniformValue.h"
 #include "CMesh.h"
 #include "TTexture.h"
-
-const int KNumberOfTextures=2;
-const int KNumberOfShadingPrograms=5;
-
-const int KNumberOfColorMaps=5;
-const int KNUmberOfDepthMaps=1;
-const int KTextureWidth=512;
-const int KTextureHeight = 512;
-const int KTextureBorder=0;
-const int KTextureLevel=0;
+#include "CShaderPhong.h"
+#include "CShaderCartoon.h"
+#include "CShaderBloom.h"
 
 /** \brief Rendering class.
 *
@@ -73,6 +66,14 @@ class CMyRenderer
 		int Height() const
 			{ return iScreenHeight; };
 
+		//Render current object
+		void RenderObjects();
+
+		CShaderBloom* getShaderBloom()
+		{
+			return iShaderBloom;
+		}
+
 	//PRIVATE FUNCTIONS
 	//------------------
 	private:
@@ -84,9 +85,6 @@ class CMyRenderer
 
 		//Constructors will call this one
 		void InitLights();
-		
-		//Render current object
-		void RenderObjects();
 		
 		//Render objects with Phong shading program
 		void RenderPhongObjects();
@@ -102,23 +100,6 @@ class CMyRenderer
 
 		/// Text output. Prints text on the screen.
 		void DrawText() const;
-		
-		//Enable Cartoon shading
-		void InitCartoonShadering();
-		
-		//Enable PhongShading
-		void InitPhongShading();
-
-		//Enable Blooming effect
-		void InitBloomShadingEffect();
-		
-		//Setting up the frame buffer object + textures
-		void InitFramebufferObject();
-		
-		void RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap );
-		void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 );		
-		void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2 );
-		void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2, GLuint aColorMapId3 );
     
 	//PUBLIC STATIC DATA
 	//------------------
@@ -126,15 +107,6 @@ class CMyRenderer
 		/// A static pointer to the current renderer object.
 		/// This is used to be able to pass rendering method to OpenGL.
 		static CMyRenderer* iCurrentRenderer;
-		
-		enum TShadingProgram
-		{
-			EPhongProgram = 0,
-			ECartoonProgram,
-			EBrightPassProgram,
-			EBlurProgram,
-			ECombineProgram
-		};
 
 	//PRIVATE DATA
 	//------------------
@@ -158,60 +130,57 @@ class CMyRenderer
 		GLfloat iAngle;
 		GLfloat iWobble;
 		
-		GLuint iTextureId[KNumberOfTextures];
-    
-		CShadingProgram* iShaderProgram[KNumberOfShadingPrograms];
-		CShader* iVertexShader[KNumberOfShadingPrograms];
-		CShader* iFragmentShader[KNumberOfShadingPrograms];
-		
-		TFramebufferObject* iFrameBufferObject;
-		
-		enum TTextureId
-		{
-			EDepthTexture = 0,
-			EPhongTexture,
-			EBrightPassTexture,
-			EFirstBlurTexture,
-			ESecondBlurTexture,
-			EThirdBlurTexture
-		};		
-		//GLuint iColorMapId[KNumberOfColorMaps];
-		//GLuint iDepthMapId;
+		//GLuint iTextureId[KNumberOfTextures];
+  //  
+		//CShaderProgram* iShaderProgram[KNumberOfShadingPrograms];
+		//CShader* iVertexShader[KNumberOfShadingPrograms];
+		//CShader* iFragmentShader[KNumberOfShadingPrograms];
+		//
+		//TFramebufferObject* iFrameBufferObject;
 
-		TTexture* iTextures[KNumberOfColorMaps+KNUmberOfDepthMaps];
+		CShaderPhong* iShaderPhong;
+		CShaderCartoon* iShaderCartoon;
+		CShaderBloom* iShaderBloom;
+
+		//enum TTextureId
+		//{
+		//	EDepthTexture = 0,
+		//	EPhongTexture,
+		//	EBrightPassTexture,
+		//	EFirstBlurTexture,
+		//	ESecondBlurTexture,
+		//	EThirdBlurTexture
+		//};		
+
+		//TTexture* iTextures[KNumberOfTextureMaps+KNumberOfDepthMaps];
 		
 		enum TShading
 		{
-			ENone = 0,
-			EPhong,
+			EPhong = 0,
 			ECartoon,
-			EBloom
+			EBloom,
+			ENone,
 		} iShadingType;
 		
-		
-		ShaderUniformValue<float>* iKa;		
-		ShaderUniformValue<float>* iKd;
-		ShaderUniformValue<float>* iKs;
-		
-		ShaderUniformValue<int>* iLightMap;
-		
-		ShaderUniformValue<float>* iThresholdBrightness;
-		float iThresholdBrightnessValue;
-		
-		ShaderUniformValue<float>* iSampleDistance;
-		float iFirstBlurSampleDistance;
-		float iSecondBlurSampleDistance;
-		float iThirdBlurSampleDistance;
-		
-		ShaderUniformValue<int>* iOriginalTexture;
-		ShaderUniformValue<int>* iBlurTexture1;
-		ShaderUniformValue<int>* iBlurTexture2;
-		ShaderUniformValue<int>* iBlurTexture3;
-		ShaderUniformValue<float>* iMipMapBias;
-		ShaderUniformValue<int>* iCombineTextures;
-		float iFirstBlurMipMapBias;
-		float iSecondBlurMipMapBias;		
-		float iThirdBlurMipMapBias;
+		//ShaderUniformValue<int>* iLightMap;
+		//
+		//ShaderUniformValue<float>* iThresholdBrightness;
+		//float iThresholdBrightnessValue;
+		//
+		//ShaderUniformValue<float>* iSampleDistance;
+		//float iFirstBlurSampleDistance;
+		//float iSecondBlurSampleDistance;
+		//float iThirdBlurSampleDistance;
+		//
+		//ShaderUniformValue<int>* iOriginalTexture;
+		//ShaderUniformValue<int>* iBlurTexture1;
+		//ShaderUniformValue<int>* iBlurTexture2;
+		//ShaderUniformValue<int>* iBlurTexture3;
+		//ShaderUniformValue<float>* iMipMapBias;
+		//ShaderUniformValue<int>* iCombineTextures;
+		//float iFirstBlurMipMapBias;
+		//float iSecondBlurMipMapBias;
+		//float iThirdBlurMipMapBias;
 		
 		CMesh* chevy;
 	};

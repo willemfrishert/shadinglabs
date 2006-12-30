@@ -1,14 +1,35 @@
 #include "CShaderEffect.h"
 
-CShaderEffect::CShaderEffect(CMyRenderer* aRenderer)
-: iRenderer(aRenderer)
+CShaderEffect::CShaderEffect( CMyRenderer* aRenderer )
 {
+	iRenderer = aRenderer;
 
-}
+	iTextures.clear();
+	iShaderProgram.clear();
+	iVertexShader.clear();
+	iFragmentShader.clear();
+};
+
+
 CShaderEffect::~CShaderEffect()
 {
-	iRenderer = NULL;
-}
+	for (int i=0, max=static_cast<int>(iTextures.size());i<max;i++)
+	{
+		delete iTextures.at(i);
+	}
+	for (int i=0, max=static_cast<int>(iVertexShader.size());i<max;i++)
+	{
+		delete iVertexShader.at(i);
+	}	
+	for (int i=0, max=static_cast<int>(iFragmentShader.size());i<max;i++)
+	{
+		delete iFragmentShader.at(i);
+	}	
+	for (int i=0, max=static_cast<int>(iShaderProgram.size());i<max;i++)
+	{
+		delete iShaderProgram.at(i);
+	}
+};
 
 void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap )
 {
@@ -54,7 +75,6 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap 
 
 	glMatrixMode( GL_MODELVIEW );
 }
-
 
 void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 )
 {
