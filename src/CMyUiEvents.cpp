@@ -51,34 +51,34 @@ void CMyUiEvents::ProcessNormalKeys(unsigned char aKey, int aX, int aY)
 		exit(0);
 		break;
 	case ']':
-		iRenderer->iMipMapBias->setValue(iRenderer->iMipMapBias->getValue()+1.0);
+	//	iRenderer->getShaderBloom->iMipMapBias->setValue(iRenderer->iMipMapBias->getValue()+1.0);
 		break;
 	case '[':
-		iRenderer->iMipMapBias->setValue(iRenderer->iMipMapBias->getValue()-1.0);
+	//	iRenderer->iMipMapBias->setValue(iRenderer->iMipMapBias->getValue()-1.0);
 		break;
 	case 'q':
-		iRenderer->iFirstBlurSampleDistance -= 0.0005f;
+		iRenderer->getShaderBloom()->setFirstBlurSampleDistance(iRenderer->getShaderBloom()->getFirstBlurSampleDistance() - 0.0005f); 
 		break;		
 	case 'w':
-		iRenderer->iFirstBlurSampleDistance += 0.0005f;
+		iRenderer->getShaderBloom()->setFirstBlurSampleDistance(iRenderer->getShaderBloom()->getFirstBlurSampleDistance() + 0.0005f);
 		break;
 	case 'a':
-		iRenderer->iSecondBlurSampleDistance -= 0.0005f;
+		iRenderer->getShaderBloom()->setSecondBlurSampleDistance(iRenderer->getShaderBloom()->getSecondBlurSampleDistance() - 0.0005f); 
 		break;		
 	case 's':
-		iRenderer->iSecondBlurSampleDistance += 0.0005f;
+		iRenderer->getShaderBloom()->setSecondBlurSampleDistance(iRenderer->getShaderBloom()->getSecondBlurSampleDistance() + 0.0005f);
 		break;
-		//		case 'z':
-		//			iRenderer->iThirdBlurSampleDistance -= 0.0005f;
-		//			break;		
-		//		case 'x':
-		//			iRenderer->iThirdBlurSampleDistance += 0.0005f;
-		//			break;
+	case 'z':
+		iRenderer->getShaderBloom()->setThirdBlurSampleDistance(iRenderer->getShaderBloom()->getThirdBlurSampleDistance() - 0.0005f); 
+		break;		
+	case 'x':
+		iRenderer->getShaderBloom()->setThirdBlurSampleDistance(iRenderer->getShaderBloom()->getThirdBlurSampleDistance() + 0.0005f);
+		break;
 	case 'e':
-		iRenderer->iThresholdBrightnessValue -= 0.1f;
+		iRenderer->getShaderBloom()->setThresHoldBrightness(iRenderer->getShaderBloom()->getThresHoldBrightness()  - 0.05f);
 		break;		
 	case 'r':
-		iRenderer->iThresholdBrightnessValue += 0.1f;
+		iRenderer->getShaderBloom()->setThresHoldBrightness(iRenderer->getShaderBloom()->getThresHoldBrightness()  + 0.05f);
 		break;
 	case '0':
 		iRenderer->iShadingType = CMyRenderer::ENone;
@@ -92,12 +92,12 @@ void CMyUiEvents::ProcessNormalKeys(unsigned char aKey, int aX, int aY)
 	case '3':
 		iRenderer->iShadingType = CMyRenderer::EBloom;
 		break;
-	case 't':
-		if ( 1 == iRenderer->iCombineTextures->getValue() )
-			iRenderer->iCombineTextures->setValue( 0 );
-		else
-			iRenderer->iCombineTextures->setValue( 1 );
-		break;
+	//case 't':
+	//	if ( 1 == iRenderer->iCombineTextures->getValue() )
+	//		iRenderer->iCombineTextures->setValue( 0 );
+	//	else
+	//		iRenderer->iCombineTextures->setValue( 1 );
+	//	break;
 	}
 }
 

@@ -39,10 +39,7 @@ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
-#ifndef UCDAVIS_FRAMEBUFFER_OBJECT_H
-#define UCDAVIS_FRAMEBUFFER_OBJECT_H
-
-//#include <GL/glew.h>
+#pragma once
 #include "Basic.h"
 
 class TFramebufferObject
@@ -76,12 +73,8 @@ public:
 
 	/// Return number of color attachments permitted
 	static GLint GetMaxColorAttachments();
-	GLuint iFramebufferObjectId;
+
 private:
-
-
+	GLuint iFramebufferObjectId;
 	void  FramebufferAttachTexture( GLenum aAttachment, GLenum aTextureType, GLuint texId, int aMipmapLevel, int aZSlice );
 };
-
-#endif
-

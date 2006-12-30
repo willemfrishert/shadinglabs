@@ -2,12 +2,12 @@
 
 const int KLogLengthMax=500;
 
-CShadingProgram::CShadingProgram()
+CShaderProgram::CShaderProgram()
 {
 	iShaderProgramId = glCreateProgram();
 }
 
-CShadingProgram::~CShadingProgram()
+CShaderProgram::~CShaderProgram()
 {
 	this->Enable( false );
 	for (unsigned int i=0;i<iShaders.size();i++)
@@ -22,12 +22,12 @@ CShadingProgram::~CShadingProgram()
 	CHECK_GL_ERROR();
 }
 
-void CShadingProgram::AddShader(CShader* Shader)
+void CShaderProgram::AddShader(CShader* Shader)
 {
 	iShaders.push_back(Shader); 
 }
 
-bool CShadingProgram::Rebuild()
+bool CShaderProgram::Rebuild()
 {
 	// Clean
 	GLint linked;
@@ -43,7 +43,7 @@ bool CShadingProgram::Rebuild()
 }
 
 
-bool CShadingProgram::Build()
+bool CShaderProgram::Build()
 {
 	bool status = true;
 
@@ -100,7 +100,7 @@ bool CShadingProgram::Build()
 	return status;
 }
 
-bool CShadingProgram::LinkerLog()
+bool CShaderProgram::LinkerLog()
 {    
 	GLint status = 0;
 	glGetProgramiv( iShaderProgramId, GL_LINK_STATUS, &status );
@@ -118,7 +118,7 @@ bool CShadingProgram::LinkerLog()
 	return ( 0 == status ) ? false : true;
 }
 
-bool CShadingProgram::Enable(bool aState)
+bool CShaderProgram::Enable(bool aState)
 {
 	GLint status=0;
 
@@ -156,22 +156,22 @@ bool CShadingProgram::Enable(bool aState)
 	return (status = GL_FALSE ? false : true);
 }
 
-void CShadingProgram::DisableAll()
+void CShaderProgram::DisableAll()
 {
 	glUseProgram(0);
 }
 
-void CShadingProgram::AddUniformObject(ShaderUniformObject* obj)
+void CShaderProgram::AddUniformObject(ShaderUniformObject* obj)
 {
 	uniformObjects.push_back( obj );
 }
 
-void CShadingProgram::AddAttributeObject(ShaderAttributeObject* obj)
+void CShaderProgram::AddAttributeObject(ShaderAttributeObject* obj)
 {
 	attributeObjects.push_back( obj );
 }
 
-void CShadingProgram::UpdateProgramUniformObjects()
+void CShaderProgram::UpdateProgramUniformObjects()
 {
 	list< ShaderUniformObject* >::const_iterator uniformIter = this->uniformObjects.begin();
 
