@@ -298,6 +298,8 @@ void CMyRenderer::RenderScene()
 	glMatrixMode( GL_MODELVIEW );	
 	glLoadIdentity();
 
+	CShaderProgram::DisableAll();
+
 	switch ( iShadingType )
 	{
 	case EPhong:
@@ -318,8 +320,9 @@ void CMyRenderer::RenderScene()
 	default:
 		{
 			glDisable( GL_TEXTURE_2D );
+			glDisable( GL_TEXTURE_1D );
 			glEnable( GL_LIGHTING );
-			CShaderProgram::DisableAll();
+//			CShaderProgram::DisableAll();
 			RenderObjects();
 			break;
 		}

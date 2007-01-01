@@ -75,8 +75,10 @@ private:
 	ShaderUniformValue<int>* iBlurTexture1;
 	ShaderUniformValue<int>* iBlurTexture2;
 	ShaderUniformValue<int>* iBlurTexture3;
-	ShaderUniformValue<float>* iMipMapBias;
+
 	ShaderUniformValue<int>* iCombineTextures;
+
+	ShaderUniformValue<float>* iMipMapBias;
 	float iFirstBlurMipMapBias;
 	float iSecondBlurMipMapBias;
 	float iThirdBlurMipMapBias;

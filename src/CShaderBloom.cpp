@@ -69,22 +69,22 @@ CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 	iShaderProgram[ECombineProgram]->AddShader( iFragmentShader[ECombineProgram] );	
 
 	iOriginalTexture = new ShaderUniformValue<int>();
-	iOriginalTexture->setName("originalTex");
+	iOriginalTexture->setName("originalTexture");
 	iOriginalTexture->setValue( 0 );
 	iShaderProgram[ECombineProgram]->AddUniformObject( iOriginalTexture );
 
 	iBlurTexture1 = new ShaderUniformValue<int>();
-	iBlurTexture1->setName("blurTex1");
+	iBlurTexture1->setName("blurTexture1");
 	iBlurTexture1->setValue( 1 );
 	iShaderProgram[ECombineProgram]->AddUniformObject( iBlurTexture1 );
 
 	iBlurTexture2 = new ShaderUniformValue<int>();
-	iBlurTexture2->setName("blurTex2");
+	iBlurTexture2->setName("blurTexture2");
 	iBlurTexture2->setValue( 2 );
 	iShaderProgram[ECombineProgram]->AddUniformObject( iBlurTexture2 );
 
 	iBlurTexture3 = new ShaderUniformValue<int>();
-	iBlurTexture3->setName("blurTex3");
+	iBlurTexture3->setName("blurTexture3");
 	iBlurTexture3->setValue( 3 );
 	iShaderProgram[ECombineProgram]->AddUniformObject( iBlurTexture3 );	
 
@@ -122,12 +122,19 @@ void CShaderBloom::InitFramebufferObject()
 
 CShaderBloom::~CShaderBloom()
 {
+	delete iFrameBufferObject;
+
 	delete iThresholdBrightness;
 	delete iSampleDistance;
 	delete iOriginalTexture;
 	delete iBlurTexture1;
+	delete iBlurTexture2;
+	delete iBlurTexture3;
 	delete iMipMapBias;
 	delete iCombineTextures;
+
+	iShaderEffect = NULL;
+	iRenderer = NULL;
 }
 
 void CShaderBloom::use(CShaderEffect *aShaderEffect)
@@ -135,6 +142,7 @@ void CShaderBloom::use(CShaderEffect *aShaderEffect)
 	iShaderEffect = aShaderEffect;
 	use();
 }
+
 void CShaderBloom::use()
 {
 	glEnable(GL_TEXTURE_2D);
@@ -158,11 +166,10 @@ void CShaderBloom::use()
 	CHECK_GL_ERROR();
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
-	// render objects using Phong shading
-	glDisable(GL_TEXTURE_2D);
 
+	// render objects using the specified shader effect
+	glDisable(GL_TEXTURE_2D);
 	iShaderEffect->use();
-//	iRenderer->RenderObjects();
 
 	CHECK_GL_ERROR();
 	//	glDisable(GL_LIGHTING);
@@ -200,8 +207,7 @@ void CShaderBloom::use()
 	iShaderProgram[EBrightPassProgram]->Enable( true );
 
 	// render screen size quad with Phong texture (real scene -> bloom effect scene)
-	//	RenderSceneOnQuad( iColorMapId[EPhongTextureId], false );
-	RenderSceneOnQuad( iTextures[EPhongTexture]->iId, false );
+	RenderSceneOnQuad( *iTextures[EPhongTexture] );
 	CHECK_GL_ERROR();
 
 	// first blur pass
@@ -222,9 +228,8 @@ void CShaderBloom::use()
 	iMipMapBias->setValue( iFirstBlurMipMapBias );
 	iShaderProgram[EBlurProgram]->Enable( true );
 
-	// render screen size quad with texture (bloom effect scene -> blur)	
-	//	RenderSceneOnQuad( iColorMapId[EBrightPassTextureId], true );
-	RenderSceneOnQuad( iTextures[EBrightPassTexture]->iId, true );
+	// render screen size quad with texture (bloom effect scene -> blur)
+	RenderSceneOnQuad( *iTextures[EBrightPassTexture] );
 
 
 	//second blur pass
@@ -241,13 +246,12 @@ void CShaderBloom::use()
 
 
 	// set up shading program (blur effect)
-	iSampleDistance->setValue( iSecondBlurSampleDistance );
+	iSampleDistance->setValue( iSecondBlurSampleDistance );	
 	iMipMapBias->setValue( iSecondBlurMipMapBias );
 	iShaderProgram[EBlurProgram]->Enable( true );
 
-	// render screen size quad with texture (bloom effect scene -> blur)	
-	//RenderSceneOnQuad( iColorMapId[EFirstBlurTextureId], false );
-	RenderSceneOnQuad( iTextures[EFirstBlurTexture]->iId, false );
+	// render screen size quad with texture (bloom effect scene -> blur)
+	RenderSceneOnQuad( *iTextures[EFirstBlurTexture] );
 	////disabled the third blur pass
 
 	// change FBO texture (color attachment)
@@ -267,7 +271,7 @@ void CShaderBloom::use()
 	iShaderProgram[EBlurProgram]->Enable( true );
 
 	// render screen size quad with texture (bloom effect scene -> blur)	
-	RenderSceneOnQuad( iTextures[ESecondBlurTexture]->iId, false );
+	RenderSceneOnQuad( *iTextures[ESecondBlurTexture] );
 
 	// set up shading program (combiner)
 	iShaderProgram[ECombineProgram]->Enable( true );
@@ -275,26 +279,22 @@ void CShaderBloom::use()
 
 	CHECK_GL_ERROR();	
 
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
 	//disable any frame buffer object. We want to render to the screen in this final pass
 	iFrameBufferObject->Enable( false, GL_BACK, iRenderer->Width(), iRenderer->Height() );
-
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	// blending using multi texture (real scene + blurred bloom scene)
 	// render screen size quad with multi texture
-	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId, iTextures[ESecondBlurTexture]->iId, iTextures[EThirdBlurTexture]->iId );
-	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId, iTextures[ESecondBlurTexture]->iId );
-	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, iTextures[EFirstBlurTexture]->iId );
+	RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture], *iTextures[ESecondBlurTexture], *iTextures[EThirdBlurTexture] );
+	//RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture], *iTextures[ESecondBlurTexture] );
+	//RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture] );
 
 	//functions to test separate buffers
 	//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
 	//CShaderProgram::DisableAll();
-	//RenderSceneOnQuad( iTextures[EPhongTexture]->iId, false );
-	//RenderSceneOnQuad( iTextures[EBrightPassTexture]->iId, false );	
-	//RenderSceneOnQuad( iTextures[EFirstBlurTexture]->iId, false );
-	//RenderSceneOnQuad( iTextures[ESecondBlurTexture]->iId, false );	
-	//RenderSceneOnQuad( iTextures[EThirdBlurTexture]->iId, false );
+	//RenderSceneOnQuad( *iTextures[EPhongTexture] );
+	//RenderSceneOnQuad( *iTextures[EBrightPassTexture] );	
+	//RenderSceneOnQuad( *iTextures[EFirstBlurTexture] );
+	//RenderSceneOnQuad( *iTextures[ESecondBlurTexture] );	
+	//RenderSceneOnQuad( *iTextures[EThirdBlurTexture] );
 }

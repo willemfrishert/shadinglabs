@@ -12,16 +12,17 @@ void main(void)
 	vec3 viewVector = -normalize(vView);
 	vec3 reflectVector = reflect( vLight.xyz, normalVector ); 
 
-//  // Compute vector from surface to light position 
-//  VP = vec3(gl_LightSource[i].position) - ecPosition3; 
-// 
-//  // Compute distance between surface and light position 
-//  d = length(VP); 
-//
-//  vec3 Att = 1.0 / (gl_LightSource[i].constantAttenuation +              //attenuation coefficient
-//                    gl_LightSource[i].linearAttenuation * d + 
-//                    gl_LightSource[i].quadraticAttenuation * d * d); 
-  
+
+	//// Compute vector from surface to light position 
+	//VP = vec3(gl_LightSource[i].position) - ecPosition3; 
+
+	//// Compute distance between surface and light position 
+	//d = length(VP); 
+
+	//vec3 Att = 1.0 / (gl_LightSource[i].constantAttenuation +              //attenuation coefficient
+	//				 gl_LightSource[i].linearAttenuation * d + 
+	//				 gl_LightSource[i].quadraticAttenuation * d * d); 
+
 	vec4 intensityambient  = vec4(Ka) * gl_FrontMaterial.ambient  * gl_LightSource[0].ambient;
 	vec4 intensitydiffuse  = vec4(Kd) * gl_FrontMaterial.diffuse  * gl_LightSource[0].diffuse  * clamp( dot( normalVector, vLight.xyz ), 0.0, 1.0 );
 	vec4 intensityspecular = vec4(Ks) * gl_FrontMaterial.specular * gl_LightSource[0].specular * pow(  clamp( dot( normalVector, vLight.xyz ), 0.0, 1.0 ), gl_FrontMaterial.shininess );

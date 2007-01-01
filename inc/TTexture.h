@@ -6,7 +6,7 @@ class TTexture
 {
 //METHODS
 public:
-	TTexture();
+	TTexture( GLuint aId);
 	TTexture( GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents, GLfloat aMaginificationFilter, 
 		GLfloat aMinificatationFilter, GLfloat aTextureWrapS, GLfloat aTextureWrapR, GLfloat aEnvMode, 
 		GLsizei aHeight,GLsizei aWidth, GLenum aFormat,GLenum aType, GLenum aTarget = GL_TEXTURE_2D, 
@@ -18,7 +18,7 @@ private:
 //VARIABLES
 public:
 	GLuint iId;				// TextureID
-	GLenum iTarget;			// GL_TEXTURE1D, 2D, 3D, CUBEMAP
+	GLenum iTarget;			// GL_TEXTURE_1D, 2D, 3D, CUBEMAP
 	GLint iMipMapLevel;		// mipmap level of texture
 	bool iGenerateMipMaps;	// wish to generate textures or not?
 	GLint iComponents;		// Must be 1, 2, 3, or 4, or one of the following symbolic constants:
@@ -37,14 +37,14 @@ public:
 							//	GL_RGBA4, GL_RGB5_A1,	GL_RGBA8, GL_RGB10_A2,
 							//	GL_RGBA12, or	GL_RGBA16.
 	GLfloat iMaginificationFilter; // GL_LINEAR, GL_NEAREST
-	GLfloat iMinificatationFilter; // GL_LINEAR, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR
+	GLfloat iMinificationFilter; // GL_LINEAR, GL_NEAREST, GL_LINEAR_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_LINEAR
 	GLfloat iTextureWrapS;	// GL_CLAMP_TO_EDGE, GL_REPEAT
 	GLfloat iTextureWrapR;	// GL_CLAMP_TO_EDGE, GL_REPEAT
 	GLfloat iEnvMode;		// GL_MODULATE, GL_DECAL, GL_REPLACE and GL_BLEND.
 	GLsizei iHeight;		// texture height (power of 2)
 	GLsizei iWidth;			// texture width (power of 2)
 	GLint iBorder;			// texture border (0 or 1)
-	GLenum iFormat;			// GL_DEPTH_COMPONENT, GL_COLOR_INDEX, GL_RED, GL_GREEN, GL_BLUE,	GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, and GL_LUMINANCE_ALPHA.
+	GLenum iFormat;			// GL_DEPTH_COMPONENT, GL_COLOR_INDEX, GL_RED, GL_GREEN, GL_BLUE, GL_ALPHA, GL_RGB, GL_RGBA, GL_LUMINANCE, and GL_LUMINANCE_ALPHA.
 	GLenum iType;			// GL_UNSIGNED_BYTE, GL_BYTE, GL_BITMAP,	GL_UNSIGNED_SHORT, GL_SHORT, GL_UNSIGNED_INT, GL_INT, and GL_FLOAT.
 	GLvoid *iPixels;
 	GLint iZSlice;	  // Slice number in case 3D

@@ -13,8 +13,12 @@ CShaderCartoon::CShaderCartoon(CMyRenderer* aRenderer)
 		EXIT(-1);
 	}
 
-	TTexture* texture = new TTexture();
-	texture->iId = id;
+	TTexture* texture = new TTexture( id );
+
+	//float textureData[32][3];
+
+	//shaderData[i][0] = shaderData[i][1] = shaderData[i][2] = ;
+	//TTexture* texture = new TTexture(0,false,GL_RGB, GL_NEAREST, GL_NEAREST, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_REPLACE, 1, 32, GL_RGB, GL_FLOAT, GL_TEXTURE_1D, 0, 0, textureData);
 
 	iTextures.push_back( texture );
 
@@ -45,11 +49,10 @@ CShaderCartoon::~CShaderCartoon()
 }
 void CShaderCartoon::use()
 {
+	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
+	glBindTexture( GL_TEXTURE_2D, iTextures[0]->iId );
 
-	// disable Cartoon program
-	iShaderProgram[0]->Enable( false );
-	CHECK_GL_ERROR();
 
 	//render backside:
 	glEnable(GL_CULL_FACE);
@@ -60,31 +63,22 @@ void CShaderCartoon::use()
 	// change the polygon offset
 	glEnable( GL_POLYGON_OFFSET_LINE );
 	glPolygonOffset( 0.75, 1.0 );
-	glLineWidth( 5.0f );
+	glLineWidth( 7.0f );
 
-	glColor3f(0, 0, 0);
 	CHECK_GL_ERROR();
 	iRenderer->RenderObjects();
 	CHECK_GL_ERROR();
 
-	glColor3f(1,1,1);
-	CHECK_GL_ERROR();
-
-	glDisable( GL_POLYGON_OFFSET_LINE );
-
-	glPolygonMode( GL_BACK, GL_FILL);
-
 	glDisable(GL_CULL_FACE);
 	glCullFace( GL_BACK );
+	glPolygonMode( GL_BACK, GL_FILL);
+	glDisable( GL_POLYGON_OFFSET_LINE );
+
+
 	glMatrixMode( GL_MODELVIEW );	
 	glLoadIdentity();
 	CHECK_GL_ERROR();
 
 	iShaderProgram[0]->Enable( true );
-
-	glActiveTexture(GL_TEXTURE0);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture( GL_TEXTURE_2D, iTextures[0]->iId );
-
 	iRenderer->RenderObjects();
 }

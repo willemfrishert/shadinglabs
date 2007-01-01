@@ -10,8 +10,7 @@ void main()
 	float dotVN = abs( dot( viewDirection, normalNormalized ) );
 
 	vec4 intensity = texture2D( lightMap, vec2( dotLN, 0.0 ) );
-  
-  gl_FragColor = vec4( intensity.xyz, 1.0 );
+	gl_FragColor = vec4( intensity.rgb, 1.0 );
 }
 
 

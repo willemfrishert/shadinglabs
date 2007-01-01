@@ -31,7 +31,7 @@ CShaderEffect::~CShaderEffect()
 	}
 };
 
-void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap )
+void CShaderEffect::RenderSceneOnQuad( TTexture & aTexture )
 {
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
@@ -43,11 +43,11 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap 
 	glLoadIdentity();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glEnable( GL_TEXTURE_2D );
-	glBindTexture( GL_TEXTURE_2D, aColorMapId );
-	if ( aGenerateMipMap )
+	glEnable( aTexture.iTarget );
+	glBindTexture( aTexture.iTarget, aTexture.iId );
+	if ( aTexture.iGenerateMipMaps )
 	{
-		glGenerateMipmapEXT(GL_TEXTURE_2D);
+		glGenerateMipmapEXT(aTexture.iTarget);
 	}
 
 	//RENDER MULTITEXTURE ON QUAD
@@ -66,7 +66,7 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap 
 	glEnd();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture.iTarget );
 
 	glPopMatrix();
 
@@ -76,7 +76,7 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap 
 	glMatrixMode( GL_MODELVIEW );
 }
 
-void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 )
+void CShaderEffect::RenderSceneOnQuad( TTexture& aTexture0, TTexture& aTexture1 )
 {
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
@@ -88,12 +88,20 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 
 	glLoadIdentity();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glEnable( GL_TEXTURE_2D );
-	glBindTexture( GL_TEXTURE_2D, aColorMapId0 );
+	glEnable( aTexture0.iTarget );
+	glBindTexture( aTexture0.iTarget, aTexture0.iId );
+	if ( aTexture0.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT(aTexture0.iTarget);
+	}
 
 	glActiveTexture( GL_TEXTURE1 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId1 );
+	glEnable( aTexture1.iTarget );
+	glBindTexture( aTexture1.iTarget, aTexture1.iId );
+	if ( aTexture1.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT(aTexture1.iTarget);
+	}
 
 	//RENDER MULTITEXTURE ON QUAD
 	glBegin(GL_QUADS);
@@ -115,10 +123,10 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 
 	glEnd();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture0.iTarget );
 
 	glActiveTexture( GL_TEXTURE1 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture1.iTarget );
 
 	glPopMatrix();
 
@@ -129,7 +137,7 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 
 }
 
 
-void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2 )
+void CShaderEffect::RenderSceneOnQuad( TTexture& aTexture0, TTexture& aTexture1, TTexture& aTexture2 )
 {
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
@@ -141,16 +149,28 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1,
 	glLoadIdentity();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glEnable( GL_TEXTURE_2D );
-	glBindTexture( GL_TEXTURE_2D, aColorMapId0 );
+	glEnable( aTexture0.iTarget );
+	glBindTexture( aTexture0.iTarget, aTexture0.iId );
+	if ( aTexture0.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT(aTexture0.iTarget);
+	}
 
 	glActiveTexture( GL_TEXTURE1 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId1 );
+	glEnable( aTexture1.iTarget );
+	glBindTexture( aTexture1.iTarget, aTexture1.iId );
+	if ( aTexture1.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT(aTexture1.iTarget);
+	}
 
 	glActiveTexture( GL_TEXTURE2 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId2 );
+	glEnable( aTexture2.iTarget );
+	glBindTexture( aTexture2.iTarget, aTexture2.iId );
+	if ( aTexture2.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT(aTexture2.iTarget);
+	}
 
 	//RENDER MULTITEXTURE ON QUAD
 	glBegin(GL_QUADS);
@@ -176,13 +196,13 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1,
 	glEnd();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture0.iTarget );
 
 	glActiveTexture( GL_TEXTURE1 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture1.iTarget );
 
 	glActiveTexture( GL_TEXTURE2 );
-	glDisable( GL_TEXTURE_2D );	
+	glDisable( aTexture2.iTarget );	
 
 	glPopMatrix();
 
@@ -193,7 +213,7 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1,
 }
 
 
-void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2, GLuint aColorMapId3 )
+void CShaderEffect::RenderSceneOnQuad( TTexture& aTexture0, TTexture& aTexture1, TTexture& aTexture2, TTexture& aTexture3 )
 {
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
@@ -205,20 +225,36 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1,
 	glLoadIdentity();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glEnable( GL_TEXTURE_2D );
-	glBindTexture( GL_TEXTURE_2D, aColorMapId0 );
+	glEnable( aTexture0.iTarget );
+	glBindTexture( aTexture0.iTarget, aTexture0.iId );
+	if ( aTexture0.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT( aTexture0.iTarget );
+	}
 
 	glActiveTexture( GL_TEXTURE1 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId1 );
+	glEnable( aTexture1.iTarget );
+	glBindTexture( aTexture1.iTarget, aTexture1.iId );
+	if ( aTexture1.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT( aTexture1.iTarget );
+	}
 
 	glActiveTexture( GL_TEXTURE2 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId2 );
+	glEnable( aTexture2.iTarget );
+	glBindTexture( aTexture2.iTarget, aTexture2.iId );
+	if ( aTexture2.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT( aTexture2.iTarget );
+	}
 
 	glActiveTexture( GL_TEXTURE3 );
-	glEnable( GL_TEXTURE_2D );	
-	glBindTexture( GL_TEXTURE_2D, aColorMapId3 );
+	glEnable( aTexture3.iTarget );
+	glBindTexture( aTexture3.iTarget, aTexture3.iId );
+	if ( aTexture3.iGenerateMipMaps )
+	{
+		glGenerateMipmapEXT( aTexture3.iTarget );
+	}
 
 	//RENDER MULTITEXTURE ON QUAD
 	glBegin(GL_QUADS);
@@ -248,16 +284,16 @@ void CShaderEffect::RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1,
 	glEnd();
 
 	glActiveTexture( GL_TEXTURE0 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture0.iTarget );
 
 	glActiveTexture( GL_TEXTURE1 );
-	glDisable( GL_TEXTURE_2D );
+	glDisable( aTexture1.iTarget );
 
 	glActiveTexture( GL_TEXTURE2 );
-	glDisable( GL_TEXTURE_2D );	
+	glDisable( aTexture2.iTarget );	
 
 	glActiveTexture( GL_TEXTURE3 );
-	glDisable( GL_TEXTURE_2D );		
+	glDisable( aTexture3.iTarget );		
 
 	glPopMatrix();
 
