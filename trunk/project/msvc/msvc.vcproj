@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="msvc"
 	ProjectGUID="{8F932163-FDA0-49A4-BD95-DED64C37BBB3}"
 	RootNamespace="msvc"
@@ -417,18 +417,6 @@
 			</File>
 			<File
 				RelativePath="..\..\shader\phong.vert"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\toon.frag"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\toon.vert"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\toon2.frag"
 				>
 			</File>
 			<File

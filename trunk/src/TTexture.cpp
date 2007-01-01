@@ -1,8 +1,8 @@
 #include "TTexture.h"
 
-TTexture::TTexture()
+TTexture::TTexture(  GLuint aId )
+: iId(aId)
 {
-
 };
 
 TTexture::TTexture(  GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents, GLfloat aMaginificationFilter,
@@ -14,7 +14,7 @@ TTexture::TTexture(  GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents,
 , iGenerateMipMaps(aGenerateMipMaps)
 , iComponents(aComponents)
 , iMaginificationFilter(aMaginificationFilter)
-, iMinificatationFilter(aMinificatationFilter)
+, iMinificationFilter(aMinificatationFilter)
 , iTextureWrapS(aTextureWrapS)
 , iTextureWrapR(aTextureWrapR)
 , iEnvMode(aEnvMode)
@@ -27,21 +27,36 @@ TTexture::TTexture(  GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents,
 , iZSlice(aZSlice)
 {
 	glGenTextures( 1, &iId );
-	glBindTexture( GL_TEXTURE_2D, iId );
+
+	glBindTexture( iTarget, iId );
 
 	// set texture parameters
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, iMinificatationFilter );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, iMaginificationFilter );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, iTextureWrapS );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, iTextureWrapR );
+	glTexParameterf( iTarget, GL_TEXTURE_MIN_FILTER, iMinificationFilter );
+	glTexParameterf( iTarget, GL_TEXTURE_MAG_FILTER, iMaginificationFilter );
+	glTexParameterf( iTarget, GL_TEXTURE_WRAP_S, iTextureWrapS );
+	glTexParameterf( iTarget, GL_TEXTURE_WRAP_T, iTextureWrapR );
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, iEnvMode );
 
+	switch( iTarget )
+	{
+	case GL_TEXTURE_2D:
+		{
+			glTexImage2D( iTarget, iMipMapLevel, iComponents, iWidth, iHeight, iBorder, iFormat, iType, iPixels );
+			break;
+		}
+	case GL_TEXTURE_1D:
+		{
+				glTexImage1D (iTarget, iMipMapLevel, iComponents, iWidth, iHeight, iFormat , iType, iPixels);
+			break;
+		}
+
+	}
 	// set up the texture size, type, format,...
-	glTexImage2D( iTarget, iMipMapLevel, iComponents, iWidth, iHeight, iBorder, iFormat, iType, iPixels );
+
 
 	if (iGenerateMipMaps )
 	{
-		glGenerateMipmapEXT( GL_TEXTURE_2D );
+		glGenerateMipmapEXT( iTarget );
 	}
 }
 

@@ -16,10 +16,10 @@ public:
 	CShaderEffect(CMyRenderer* aRenderer);
 	~CShaderEffect();
 	virtual void use(){};
-	void RenderSceneOnQuad( GLuint aColorMapId, bool aGenerateMipMap );
-	void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1 );		
-	void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2 );
-	void RenderSceneOnQuad( GLuint aColorMapId0, GLuint aColorMapId1, GLuint aColorMapId2, GLuint aColorMapId3 );
+	void RenderSceneOnQuad( TTexture& aTexture );
+	void RenderSceneOnQuad( TTexture& aTexture0, TTexture &aTexture1 );		
+	void RenderSceneOnQuad( TTexture& aTexture0, TTexture& aTexture1, TTexture& aTexture2 );
+	void RenderSceneOnQuad( TTexture& aTexture0, TTexture& aTexture1, TTexture& aTexture2, TTexture& aTexture3 );
 protected:
 
 
