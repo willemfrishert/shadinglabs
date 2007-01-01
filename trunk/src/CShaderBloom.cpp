@@ -44,14 +44,13 @@ CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 	iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );	
 
 	iSampleDistance = new ShaderUniformValue<float>();
-	iSampleDistance->setName("sampleDist");
+	iSampleDistance->setName("sampleDistance");
 	iSampleDistance->setValue( iFirstBlurSampleDistance );
 	iShaderProgram[EBlurProgram]->AddUniformObject( iSampleDistance );
 
 	iMipMapBias = new ShaderUniformValue<float>();
 	iMipMapBias->setName("mipmapBias");
 	iMipMapBias->setValue( iFirstBlurMipMapBias );
-	//	iShaderProgram[ECombineProgram]->AddUniformObject( iMipMapBias );
 	iShaderProgram[EBlurProgram]->AddUniformObject( iMipMapBias );
 
 

@@ -71,6 +71,14 @@ private:
 	float iSecondBlurSampleDistance;
 	float iThirdBlurSampleDistance;
 
+	ShaderUniformValue<float>* iHorizontalBlur;
+	ShaderUniformValue<float>* iVerticalBlur;
+
+	ShaderUniformValue<float>* iMipMapBias;
+	float iFirstBlurMipMapBias;
+	float iSecondBlurMipMapBias;
+	float iThirdBlurMipMapBias;
+
 	ShaderUniformValue<int>* iOriginalTexture;
 	ShaderUniformValue<int>* iBlurTexture1;
 	ShaderUniformValue<int>* iBlurTexture2;
@@ -78,10 +86,7 @@ private:
 
 	ShaderUniformValue<int>* iCombineTextures;
 
-	ShaderUniformValue<float>* iMipMapBias;
-	float iFirstBlurMipMapBias;
-	float iSecondBlurMipMapBias;
-	float iThirdBlurMipMapBias;
+
 
 	CShaderEffect* iShaderEffect;
 };
