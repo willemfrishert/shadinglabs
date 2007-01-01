@@ -392,6 +392,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\shader\blureffect.frag"
+				>
+			</File>
+			<File
 				RelativePath="..\..\shader\brightpass.frag"
 				>
 			</File>
@@ -401,14 +405,6 @@
 			</File>
 			<File
 				RelativePath="..\..\shader\combine.frag"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\dof.frag"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\fragment_shader.frag"
 				>
 			</File>
 			<File
@@ -425,14 +421,6 @@
 			</File>
 			<File
 				RelativePath="..\..\shader\toontexture.vert"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\transform.vert"
-				>
-			</File>
-			<File
-				RelativePath="..\..\shader\vertex_shader.vert"
 				>
 			</File>
 		</Filter>

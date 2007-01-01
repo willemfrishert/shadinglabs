@@ -3,9 +3,9 @@
 
 CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 : CShaderEffect(aRenderer)
-, iFirstBlurSampleDistance(0.0078f)
-, iSecondBlurSampleDistance( iFirstBlurSampleDistance+0.0078f )
-, iThirdBlurSampleDistance( iSecondBlurSampleDistance+0.0078f )
+, iFirstBlurSampleDistance(0.01f)
+, iSecondBlurSampleDistance( iFirstBlurSampleDistance+0.01f )
+, iThirdBlurSampleDistance( iSecondBlurSampleDistance+0.01f )
 , iFirstBlurMipMapBias(1.0f)
 , iSecondBlurMipMapBias(0.0f)
 , iThirdBlurMipMapBias(0.0f)
@@ -40,19 +40,26 @@ CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 	iFragmentShader[EBlurProgram] = new CFragmentShader();
 	iShaderProgram[EBlurProgram] = new CShaderProgram();
 
-	iFragmentShader[EBlurProgram]->LoadFromFile( "shader/blur.frag" );
-	iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );	
+	//iFragmentShader[EBlurProgram]->LoadFromFile( "shader/blur.frag" );
+	//iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );	
+
+	iFragmentShader[EBlurProgram]->LoadFromFile( "shader/blureffect.frag" );
+	iShaderProgram[EBlurProgram]->AddShader( iFragmentShader[EBlurProgram] );
 
 	iSampleDistance = new ShaderUniformValue<float>();
 	iSampleDistance->setName("sampleDistance");
 	iSampleDistance->setValue( iFirstBlurSampleDistance );
 	iShaderProgram[EBlurProgram]->AddUniformObject( iSampleDistance );
 
-	iMipMapBias = new ShaderUniformValue<float>();
-	iMipMapBias->setName("mipmapBias");
-	iMipMapBias->setValue( iFirstBlurMipMapBias );
-	iShaderProgram[EBlurProgram]->AddUniformObject( iMipMapBias );
+	iHorizontalBlur = new ShaderUniformValue<bool>();
+	iHorizontalBlur->setName("horizontalBlur");
+	iHorizontalBlur->setValue( true );
+	iShaderProgram[EBlurProgram]->AddUniformObject( iHorizontalBlur );
 
+	//iMipMapBias = new ShaderUniformValue<float>();
+	//iMipMapBias->setName("mipmapBias");
+	//iMipMapBias->setValue( iFirstBlurMipMapBias );
+	//iShaderProgram[EBlurProgram]->AddUniformObject( iMipMapBias );
 
 	result &= iShaderProgram[EBlurProgram]->Build();
 	if (false == result)
@@ -108,11 +115,20 @@ void CShaderBloom::InitFramebufferObject()
 {
 	iFrameBufferObject = new TFramebufferObject();
 
+	//EDepthTexture
 	iTextures.push_back( new TTexture(0, false, GL_DEPTH_COMPONENT, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_DEPTH_COMPONENT, GL_FLOAT ) );
+	//EPhongTexture
 	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
+	//EBrightPassTexture
+
 	iTextures.push_back( new TTexture(0, true, GL_RGBA, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
+	//EFirstBlurTexture
 	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
+	//ESecondBlurTexture
 	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
+	//EThirdBlurTexture
+	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
+	//ETempBlurTexture
 	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
 
 	iFrameBufferObject->AttachTexture( GL_DEPTH_ATTACHMENT_EXT, iTextures[EDepthTexture]->iTarget, iTextures[EDepthTexture]->iId );
@@ -129,8 +145,9 @@ CShaderBloom::~CShaderBloom()
 	delete iBlurTexture1;
 	delete iBlurTexture2;
 	delete iBlurTexture3;
-	delete iMipMapBias;
+	//delete iMipMapBias;
 	delete iCombineTextures;
+	delete iHorizontalBlur;
 
 	iShaderEffect = NULL;
 	iRenderer = NULL;
@@ -144,6 +161,44 @@ void CShaderBloom::use(CShaderEffect *aShaderEffect)
 
 void CShaderBloom::use()
 {
+	// create initial texture
+	GenerateInitialTexture( *iTextures[EShaderEffectTexture], iShaderEffect );
+
+	CHECK_GL_ERROR();
+
+	// brightness pass
+	BrightnessPass( *iTextures[EShaderEffectTexture], *iTextures[EBrightPassTexture] );
+
+	CHECK_GL_ERROR();
+
+	// first blur pass
+	BlurTexture( *iTextures[EBrightPassTexture], *iTextures[EFirstBlurTexture], iFirstBlurSampleDistance );
+
+	//second blur pass
+	BlurTexture( *iTextures[EFirstBlurTexture], *iTextures[ESecondBlurTexture], iSecondBlurSampleDistance );
+
+	//second blur pass
+	BlurTexture( *iTextures[ESecondBlurTexture], *iTextures[EThirdBlurTexture], iThirdBlurSampleDistance );
+
+	//combine textures
+	CombineTextures( *iTextures[EShaderEffectTexture],
+					 *iTextures[EBrightPassTexture],
+					 *iTextures[ESecondBlurTexture], 
+					 *iTextures[EThirdBlurTexture] );
+
+	//functions to test separate buffers
+	//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
+	//CShaderProgram::DisableAll();
+	//RenderSceneOnQuad( *iTextures[EShaderEffectTexture] );
+	//RenderSceneOnQuad( *iTextures[EBrightPassTexture] );	
+	//RenderSceneOnQuad( *iTextures[EFirstBlurTexture] );
+	//RenderSceneOnQuad( *iTextures[ESecondBlurTexture] );	
+	//RenderSceneOnQuad( *iTextures[EThirdBlurTexture] );
+}
+
+
+void CShaderBloom::GenerateInitialTexture( TTexture& aDestination, CShaderEffect* aShaderEffect )
+{
 	glEnable(GL_TEXTURE_2D);
 	CHECK_GL_ERROR();
 	glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -153,7 +208,7 @@ void CShaderBloom::use()
 	glLoadIdentity();
 
 	//// render real scene to FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EPhongTexture]->iTarget, iTextures[EPhongTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EPhongTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, aDestination.iTarget, aDestination.iId );//GL_TEXTURE_2D, iColorMapId[EPhongTextureId] );
 	CHECK_GL_ERROR();
 	bool result = iFrameBufferObject->IsValid();
 	if (false == result)
@@ -161,14 +216,14 @@ void CShaderBloom::use()
 		EXIT(-1);
 	}  
 	CHECK_GL_ERROR();
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EPhongTexture]->iWidth, iTextures[EPhongTexture]->iHeight );//KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, aDestination.iWidth, aDestination.iHeight );//KTextureWidth, KTextureHeight );
 	CHECK_GL_ERROR();
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
 
 	// render objects using the specified shader effect
 	glDisable(GL_TEXTURE_2D);
-	iShaderEffect->use();
+	aShaderEffect->use();
 
 	CHECK_GL_ERROR();
 	//	glDisable(GL_LIGHTING);
@@ -189,16 +244,64 @@ void CShaderBloom::use()
 	//	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	//	CShaderProgram::DisableAll();
 	//	RenderSceneOnQuad( iColorMapId[EPhongTextureId] );	
+}
 
+void CShaderBloom::BlurTexture( TTexture& aSourceTexture, TTexture& aDestinationTexture, float aSampleDistance )
+{
+	bool result;
+
+	// change FBO texture (color attachment)
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iTarget, iTextures[ETempBlurTexture]->iId );// GL_TEXTURE_2D, iColorMapId[EFirstBlurTextureId] );
+	result = iFrameBufferObject->IsValid();
+	if (false == result)
+	{	
+		EXIT(-1);
+	} 
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iWidth, iTextures[ETempBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	CHECK_GL_ERROR();
+
+	// set up shading program (blur effect)
+	iSampleDistance->setValue( aSampleDistance );
+	iHorizontalBlur->setValue( true );
+	//iMipMapBias->setValue( iFirstBlurMipMapBias );
+	iShaderProgram[EBlurProgram]->Enable( true );
+
+	// render screen size quad with texture (source -> horizontal blur)
+	RenderSceneOnQuad( aSourceTexture );
+
+	// change FBO texture (color attachment)
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, aDestinationTexture.iTarget, aDestinationTexture.iId );
+	result = iFrameBufferObject->IsValid();
+	if (false == result)
+	{	
+		EXIT(-1);
+	} 
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, aDestinationTexture.iWidth, aDestinationTexture.iHeight);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	CHECK_GL_ERROR();
+
+	// set up shading program (blur effect)
+	iSampleDistance->setValue( aSampleDistance );
+	iHorizontalBlur->setValue( false );
+	iShaderProgram[EBlurProgram]->Enable( true );
+
+	// render screen size quad with texture (vertical blur -> destination)
+	RenderSceneOnQuad( *iTextures[ETempBlurTexture] );
+}
+
+void CShaderBloom::BrightnessPass( TTexture& aSource, TTexture& aDestination )
+{
+	bool result;
 	// bright pass
 	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EBrightPassTexture]->iTarget, iTextures[EBrightPassTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EBrightPassTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, aDestination.iTarget, aDestination.iId );
 	result = iFrameBufferObject->IsValid();
 	if (false == result)
 	{
 		EXIT(-1);
 	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EBrightPassTexture]->iWidth, iTextures[EBrightPassTexture]->iHeight);//, KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, aDestination.iWidth, aDestination.iHeight);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	// set up shading program (bloom effect)
@@ -206,75 +309,13 @@ void CShaderBloom::use()
 	iShaderProgram[EBrightPassProgram]->Enable( true );
 
 	// render screen size quad with Phong texture (real scene -> bloom effect scene)
-	RenderSceneOnQuad( *iTextures[EPhongTexture] );
-	CHECK_GL_ERROR();
+	RenderSceneOnQuad( aSource );
+}
 
-	// first blur pass
-
-	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EFirstBlurTexture]->iTarget, iTextures[EFirstBlurTexture]->iId );// GL_TEXTURE_2D, iColorMapId[EFirstBlurTextureId] );
-	result = iFrameBufferObject->IsValid();
-	if (false == result)
-	{	
-		EXIT(-1);
-	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EFirstBlurTexture]->iWidth, iTextures[EFirstBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	CHECK_GL_ERROR();
-
-	// set up shading program (blur effect)
-	iSampleDistance->setValue( iFirstBlurSampleDistance );
-	iMipMapBias->setValue( iFirstBlurMipMapBias );
-	iShaderProgram[EBlurProgram]->Enable( true );
-
-	// render screen size quad with texture (bloom effect scene -> blur)
-	RenderSceneOnQuad( *iTextures[EBrightPassTexture] );
-
-
-	//second blur pass
-	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[ESecondBlurTexture]->iTarget, iTextures[ESecondBlurTexture]->iId );//GL_TEXTURE_2D, iColorMapId[ESecondBlurTextureId] );
-	result = iFrameBufferObject->IsValid();
-	if (false == result)
-	{	
-		EXIT(-1);
-	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[ESecondBlurTexture]->iWidth, iTextures[ESecondBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	CHECK_GL_ERROR();
-
-
-	// set up shading program (blur effect)
-	iSampleDistance->setValue( iSecondBlurSampleDistance );	
-	iMipMapBias->setValue( iSecondBlurMipMapBias );
-	iShaderProgram[EBlurProgram]->Enable( true );
-
-	// render screen size quad with texture (bloom effect scene -> blur)
-	RenderSceneOnQuad( *iTextures[EFirstBlurTexture] );
-	////disabled the third blur pass
-
-	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[EThirdBlurTexture]->iTarget, iTextures[EThirdBlurTexture]->iId );//GL_TEXTURE_2D, iColorMapId[EThirdBlurTextureId] );
-	result = iFrameBufferObject->IsValid();
-	if (false == result)
-	{	
-		EXIT(-1);
-	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[EThirdBlurTexture]->iWidth, iTextures[EThirdBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	CHECK_GL_ERROR();
-
-	// set up shading program (blur effect)
-	iSampleDistance->setValue( iThirdBlurSampleDistance );
-	iMipMapBias->setValue( iSecondBlurMipMapBias );
-	iShaderProgram[EBlurProgram]->Enable( true );
-
-	// render screen size quad with texture (bloom effect scene -> blur)	
-	RenderSceneOnQuad( *iTextures[ESecondBlurTexture] );
-
-	// set up shading program (combiner)
+void CShaderBloom::CombineTextures( TTexture& aOriginalTexture, TTexture& aBlur1, TTexture& aBlur2, TTexture& aBlur3 )
+{
+	//// set up shading program (combiner)
 	iShaderProgram[ECombineProgram]->Enable( true );
-
 
 	CHECK_GL_ERROR();	
 
@@ -284,16 +325,7 @@ void CShaderBloom::use()
 
 	// blending using multi texture (real scene + blurred bloom scene)
 	// render screen size quad with multi texture
-	RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture], *iTextures[ESecondBlurTexture], *iTextures[EThirdBlurTexture] );
-	//RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture], *iTextures[ESecondBlurTexture] );
-	//RenderSceneOnQuad( *iTextures[EPhongTexture], *iTextures[EFirstBlurTexture] );
-
-	//functions to test separate buffers
-	//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
-	//CShaderProgram::DisableAll();
-	//RenderSceneOnQuad( *iTextures[EPhongTexture] );
-	//RenderSceneOnQuad( *iTextures[EBrightPassTexture] );	
-	//RenderSceneOnQuad( *iTextures[EFirstBlurTexture] );
-	//RenderSceneOnQuad( *iTextures[ESecondBlurTexture] );	
-	//RenderSceneOnQuad( *iTextures[EThirdBlurTexture] );
+	RenderSceneOnQuad( aOriginalTexture, aBlur1, aBlur2, aBlur2 );
+	//RenderSceneOnQuad( aOriginalTexture, aBlur1, aBlur2 );
+	//RenderSceneOnQuad( aOriginalTexture, aBlur1 );
 }

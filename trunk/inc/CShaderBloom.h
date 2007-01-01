@@ -38,19 +38,24 @@ private:
 	virtual void use();
 	void InitFramebufferObject();
 
+	void GenerateInitialTexture( TTexture& aDestination, CShaderEffect* aShaderEffect );
+	void BlurTexture( TTexture& aSourceTexture, TTexture& aDestinationTexture, float aSampleDistance );
+	void BrightnessPass( TTexture& aSource, TTexture& aDestination );
+	void CombineTextures( TTexture& aOriginalTexture, TTexture& aBlur1, TTexture& aBlur2, TTexture& aBlur3 );
 	enum TTextureId
 	{
 		EDepthTexture = 0,
-		EPhongTexture,
+		EShaderEffectTexture,
 		EBrightPassTexture,
 		EFirstBlurTexture,
 		ESecondBlurTexture,
-		EThirdBlurTexture
+		EThirdBlurTexture,
+		ETempBlurTexture
 	};
 
 	enum TShadingProgram
 	{
-		EPhongProgram = 0,
+		EShaderEffectProgram = 0,
 		ECartoonProgram,
 		EBrightPassProgram,
 		EBlurProgram,
@@ -71,8 +76,7 @@ private:
 	float iSecondBlurSampleDistance;
 	float iThirdBlurSampleDistance;
 
-	ShaderUniformValue<float>* iHorizontalBlur;
-	ShaderUniformValue<float>* iVerticalBlur;
+	ShaderUniformValue<bool>* iHorizontalBlur;
 
 	ShaderUniformValue<float>* iMipMapBias;
 	float iFirstBlurMipMapBias;
@@ -85,8 +89,6 @@ private:
 	ShaderUniformValue<int>* iBlurTexture3;
 
 	ShaderUniformValue<int>* iCombineTextures;
-
-
 
 	CShaderEffect* iShaderEffect;
 };
@@ -139,3 +141,4 @@ float CShaderBloom::getThirdBlurSampleDistance()
 {
 	return iThirdBlurSampleDistance;
 };
+

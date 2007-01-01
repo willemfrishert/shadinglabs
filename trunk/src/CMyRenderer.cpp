@@ -13,7 +13,7 @@ CMyRenderer* CMyRenderer::iCurrentRenderer = 0;
 CMyRenderer::CMyRenderer( const int aWidth, const int aHeight )
 : iScreenHeight( aHeight )
 , iScreenWidth( aWidth )
-, iShadingType( EPhong )
+, iShadingType( EBloom )
 , iCurrentTime(0)
 , iPreviousTime(0)
 , iFpsCountString("")
