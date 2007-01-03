@@ -49,3 +49,7 @@ using namespace std;  // no need for std::cout etc.
 int CheckGLError(char *file, int line);
 void exit(char *aFile, int aLine, int aExitCode);
 
+
+#define SHOW_FPS
+#undef SHOW_FPS
+

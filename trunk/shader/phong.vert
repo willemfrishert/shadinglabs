@@ -1,6 +1,5 @@
-varying vec3 vNormal;
-varying vec3 vView;
-varying vec4 vLight;
+varying vec3 vNormal; //normal at vertex
+varying vec3 vView; // view vector towards vertex
 
 void main(void)
 {
@@ -9,12 +8,9 @@ void main(void)
 
 	//calculate the view vector and have it interpolated.
 	vView = vec3(gl_ModelViewMatrix * gl_Vertex);
-	
-	//calualte the light vector and have it interpolated.
-	vLight = gl_LightSource[0].position;
   
 	//3d Screen space:
-	// (These two are the same)
+	//These two instructions are pretty much the same. ftransform is more precise though.
 	//gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 	gl_Position = ftransform();
 }

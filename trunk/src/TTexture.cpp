@@ -1,7 +1,8 @@
 #include "TTexture.h"
 
-TTexture::TTexture(  GLuint aId )
+TTexture::TTexture(  GLuint aId, GLenum aTarget )
 : iId(aId)
+, iTarget(aTarget)
 {
 };
 

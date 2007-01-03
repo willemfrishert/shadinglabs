@@ -3,20 +3,17 @@
 
 CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 : CShaderEffect(aRenderer)
-, iFirstBlurSampleDistance(0.01f)
-, iSecondBlurSampleDistance( iFirstBlurSampleDistance+0.01f )
-, iThirdBlurSampleDistance( iSecondBlurSampleDistance+0.01f )
-, iFirstBlurMipMapBias(1.0f)
-, iSecondBlurMipMapBias(0.0f)
-, iThirdBlurMipMapBias(0.0f)
+, iFirstBlurSampleDistance(0.015f)
+, iSecondBlurSampleDistance( 0.025f )
+, iThirdBlurSampleDistance( 0.04f )
 , iThresholdBrightnessValue( 0.9f )
 {
 	iRenderer = aRenderer;
 	for (int i=0; i<KNumberOfPasses; i++)
 	{
 		iFragmentShader.push_back( new CFragmentShader() );
-		iFragmentShader.push_back(new CFragmentShader());
-		iShaderProgram.push_back(new CShaderProgram());
+		iFragmentShader.push_back( new CFragmentShader() );
+		iShaderProgram.push_back( new CShaderProgram() );
 	}
 	CHECK_GL_ERROR();
 
@@ -94,10 +91,10 @@ CShaderBloom::CShaderBloom(CMyRenderer* aRenderer)
 	iBlurTexture3->setValue( 3 );
 	iShaderProgram[ECombineProgram]->AddUniformObject( iBlurTexture3 );	
 
-	iCombineTextures = new ShaderUniformValue<int>();
-	iCombineTextures->setName("combineTextures");
-	iCombineTextures->setValue( 1 );
-	iShaderProgram[ECombineProgram]->AddUniformObject( iCombineTextures );
+	//iCombineTextures = new ShaderUniformValue<int>();
+	//iCombineTextures->setName("combineTextures");
+	//iCombineTextures->setValue( 1 );
+	//iShaderProgram[ECombineProgram]->AddUniformObject( iCombineTextures );
 
 	CHECK_GL_ERROR();
 
@@ -131,7 +128,20 @@ void CShaderBloom::InitFramebufferObject()
 	//ETempBlurTexture
 	iTextures.push_back( new TTexture(0, false, GL_RGBA, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE,GL_REPLACE,KTextureHeight, KTextureWidth, GL_RGBA, GL_FLOAT ) );
 
-	iFrameBufferObject->AttachTexture( GL_DEPTH_ATTACHMENT_EXT, iTextures[EDepthTexture]->iTarget, iTextures[EDepthTexture]->iId );
+
+	/************************************************************************/
+	/* FIX?: if depth component does not have enough precision (>=24 bit),  
+	/*       artifacts appear. GL_DEPTH_COMPONENT24 generates an error.
+	/*       Therefore, use render buffer
+	/************************************************************************/
+	//iFrameBufferObject->AttachTexture( GL_DEPTH_ATTACHMENT_EXT, iTextures[EDepthTexture]->iTarget, iTextures[EDepthTexture]->iId );
+
+	GLuint depth_rb;
+    glGenRenderbuffersEXT(1, &depth_rb);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depth_rb);
+	glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT32, 512, 512);
+	iFrameBufferObject->AttachRenderBuffer(GL_DEPTH_ATTACHMENT_EXT, depth_rb );
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 	CHECK_GL_ERROR();
 }
 
@@ -145,8 +155,7 @@ CShaderBloom::~CShaderBloom()
 	delete iBlurTexture1;
 	delete iBlurTexture2;
 	delete iBlurTexture3;
-	//delete iMipMapBias;
-	delete iCombineTextures;
+	//delete iCombineTextures;
 	delete iHorizontalBlur;
 
 	iShaderEffect = NULL;
@@ -187,6 +196,8 @@ void CShaderBloom::use()
 					 *iTextures[EThirdBlurTexture] );
 
 	//functions to test separate buffers
+	//disable any frame buffer object. We want to render to the screen in this final pass
+	//iFrameBufferObject->Enable( false, GL_BACK, iRenderer->Width(), iRenderer->Height() );
 	//glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
 	//CShaderProgram::DisableAll();
 	//RenderSceneOnQuad( *iTextures[EShaderEffectTexture] );
@@ -208,7 +219,7 @@ void CShaderBloom::GenerateInitialTexture( TTexture& aDestination, CShaderEffect
 	glLoadIdentity();
 
 	//// render real scene to FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, aDestination.iTarget, aDestination.iId );//GL_TEXTURE_2D, iColorMapId[EPhongTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, aDestination.iTarget, aDestination.iId );
 	CHECK_GL_ERROR();
 	bool result = iFrameBufferObject->IsValid();
 	if (false == result)
@@ -216,14 +227,15 @@ void CShaderBloom::GenerateInitialTexture( TTexture& aDestination, CShaderEffect
 		EXIT(-1);
 	}  
 	CHECK_GL_ERROR();
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, aDestination.iWidth, aDestination.iHeight );//KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, aDestination.iWidth, aDestination.iHeight );
 	CHECK_GL_ERROR();
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
 
 	// render objects using the specified shader effect
 	glDisable(GL_TEXTURE_2D);
-	aShaderEffect->use();
+//	aShaderEffect->use();
+	iRenderer->RenderObjects();
 
 	CHECK_GL_ERROR();
 	//	glDisable(GL_LIGHTING);
@@ -251,13 +263,13 @@ void CShaderBloom::BlurTexture( TTexture& aSourceTexture, TTexture& aDestination
 	bool result;
 
 	// change FBO texture (color attachment)
-	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iTarget, iTextures[ETempBlurTexture]->iId );// GL_TEXTURE_2D, iColorMapId[EFirstBlurTextureId] );
+	iFrameBufferObject->AttachTexture( GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iTarget, iTextures[ETempBlurTexture]->iId );
 	result = iFrameBufferObject->IsValid();
 	if (false == result)
 	{	
 		EXIT(-1);
 	} 
-	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iWidth, iTextures[ETempBlurTexture]->iHeight);//KTextureWidth, KTextureHeight );
+	iFrameBufferObject->Enable( true, GL_COLOR_ATTACHMENT0_EXT, iTextures[ETempBlurTexture]->iWidth, iTextures[ETempBlurTexture]->iHeight);
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	CHECK_GL_ERROR();
 

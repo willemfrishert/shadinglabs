@@ -73,8 +73,8 @@ public:
 
 	/// Return number of color attachments permitted
 	static GLint GetMaxColorAttachments();
-
-private:
 	GLuint iFramebufferObjectId;
+private:
+
 	void  FramebufferAttachTexture( GLenum aAttachment, GLenum aTextureType, GLuint texId, int aMipmapLevel, int aZSlice );
 };

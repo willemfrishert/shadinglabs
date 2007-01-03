@@ -6,7 +6,7 @@ class TTexture
 {
 //METHODS
 public:
-	TTexture( GLuint aId);
+	TTexture( GLuint aId, GLenum aTarget = GL_TEXTURE_2D);
 	TTexture( GLint aMipMapLevel,bool aGenerateMipMaps,GLint aComponents, GLfloat aMaginificationFilter, 
 		GLfloat aMinificatationFilter, GLfloat aTextureWrapS, GLfloat aTextureWrapR, GLfloat aEnvMode, 
 		GLsizei aHeight,GLsizei aWidth, GLenum aFormat,GLenum aType, GLenum aTarget = GL_TEXTURE_2D, 

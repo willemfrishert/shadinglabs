@@ -47,7 +47,7 @@ void initContext(int argc, char **argv)
 	glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition( KWindowPositionX, KWindowPositionY );
 	glutInitWindowSize( KWindowWidth, KWindowHeight );
-	glutCreateWindow("Let's do some shading");
+	glutCreateWindow("Lets do some shading");
 
 #ifdef _WIN32
 	GLenum err = glewInit();

@@ -18,6 +18,9 @@ public:
 protected:
 private:
 	ShaderUniformValue<int>* iLightMap;
+	ShaderUniformValue<float>* iColorRed;
+	ShaderUniformValue<float>* iColorGreen;
+	ShaderUniformValue<float>* iColorBlue;
 
 	ShaderUniformValue<float>* iThresholdBrightness;
 	float iThresholdBrightnessValue;

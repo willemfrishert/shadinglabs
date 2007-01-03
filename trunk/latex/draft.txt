@@ -1,0 +1,68 @@
+Real-time Rendering
+Shader Labs
+
+Willem Frishert
+1 januari 2006
+
+Introduction:
+
+This document contains a brief description of different shader effects and the algorithms used to implement them. The shaders have been made for the lab of the real-time rendering course and have been implemented in the GLSL (OpenGL Shading Language). The lab requires implementing two shaders (single pass rendering) and one multi-pass image filter (at least three passes supported). The two shaders doing only a single pass are a phong shader and a toon shader. For the multi-pass image filter, the choice was made to implement a bloom shader which contains nine passes in total.
+Phong Shader
+Description
+There are two types of shading that OpenGL supports by default. These are flat shading and Gouraud shading. Flat shading gives a polygon one single color whereas Gouraud shading uses normals per vertices to calculate the intensity per vertex and then interpolates the intensity along the polygon. The latter type of shading works well for diffuse surfaces but specular highlights are not shown correctly.
+
+To correctly deal with specular highlights, Phong shading should be used. Instead of calculating the intensity per vertex and interpolating this intensity along the polygon, the normal of each vertex is interpolated along the polygon. After this is done, then per fragment, the intensity is calculated based on the vertex normal, the view direction and the light direction.
+
+
+Implementation
+The phong shader is a single pass rendering algorithm, consisting of a vertex and fragment shader. The vertex shader task is to calculate the normal per vertex and calculate the view vector per vertex. Both these vectors are then interpolated over the triangle and handled by the fragment shader.
+
+The fragment shader receives the interpolated normal and view direction vector and then calculates the ambient, diffuse and specular component using the vertex normal, the view direction vector and the lighting direction vector. In this calculation, the angle between the normal vector and light vector (dot product) is used to for the diffuse component. For the specular component, the reflection vector is calculated using:
+
+reflection = light-2*(normal.light)*normal
+
+Where after, the angle between the reflection vector and the view vector (another dot product) is calculated. The shininess of the material is then used to calculate the sharpness of the lobe.
+
+Pitfalls
+There are not that many pitfalls during the implementation of this shader; however, to calculate the reflection vector, the direction of the light has to point towards the surface.
+
+Phong shader result
+
+Toon Shader
+Description
+The idea of a toon shader is to use a 3D rendering technique that is used to simulate the 2D style of cartoons. This type of non-photorealistic rendering is also known as cel-shading where only a few different levels of intensities are specified. Thus the model will end up with only a few different shades across the surface.
+
+Implementation
+There are several different ways to implement a toon shader but all have a basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). The first implementation that was implemented used conditional control flow. Thus a lot of if-else statements were used to obtain the intensity. The negative aspect of using conditional statements is that the fragments, which are calculated in parallel, all need to be send further down the pipeline together. Thus fragments which finish quickly will still wait for the last fragment to finish. To avoid this problem of "the weakest link", there are other ways of obtaining the intensity. Several methods online describe the use of a lookup table in the form of a texture. The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
+
+A texture lookup table.
+
+One additional step which can easily be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader on.
+
+Pitfalls
+One of the troubles during implementation was the fact that the texture (the lookup table) was linearly interpolated by OpenGL and thus the result did not look accurate as expected. It took quite a while to discover that this was the problem since the texture at this point was also set to repeat and thus the first and last pixel in the texture were also interpolated which gave a strange effect
+
+Toon shader result
+
+Bloom Shader
+Description
+The bloom effect allows bright highlights to be perceived as even brighter on screen while darkened areas remain similar. To achieve this result, multi-pass image filtering has to be executed in order to extract the right information from the images and combine several of them to form the final image.
+
+To obtain the images, a technique is used which allows to extract images from the frame buffer. Using this method, images are generated and can be used as input for the next pass
+
+
+Implementation
+The OpenGL frame buffer objects (FBOs) allow to the generated image to be rendered to a texture. It gives the program the ability to write to the frame buffer as if it would to display. However, instead of writing to display, the pixels are being put on a texture. After generating this texture, is it connected to screen size quad, oriented perpendicular to the screen in order to use for the next pass. Every time a pass is done, a different shader program (filter) is enabled to obtain a new texture. Below an image is showing the different textures which are generated through each pass and as can be seen, the original image, together with three levels of blur are combined to form an image on the display. Each pass will now be discussed separately.
+
+
+
+The first pass is generating the original texture. For this, the phong shader, which has been described earlier, is used. Thus this pass contains a vertex shader as well as a fragment shader.
+
+The second pass is to extract the bright spots in the scene. This is done using a filter which takes the original texture and writes to a new texture, the bright pass texture. The filter is a shader program consisting of a single fragment shader. The fragment shader retrieves a value of the texture map and with the use of a sigmoidal function (also known as smoothstep function in GLSL terminology), a new intensity is calculated which is then put on to the bright pass texture. Note that the new intensity is calculated per color component instead of looking at the components in total.
+
+The next six passes create three different levels of blurred textures. To create a nice effect, Gaussian blur is used with a kernel of a certain size. Since the kernel is circularly symmetric, the Gaussian blur can be applied to a two-dimensional image as two independent one-dimensional calculations. This means that, instead of have O(m*n*M*N), the performance will increase since the calculation is done in O(m*M*N) + O(n*M*N). In order to linearly separately separate the Gaussian kernel into a horizontal direction blur and on top of that a vertical direction blur a two pass filter are used to create a single blurred texture.
+Another problem which occurs when blurring with a Gaussian kernel is that, if the sample points are taken too far apart from each other, a "ghosting" effect occurs. The resolution to this problem is to apply a small kernel multiple times to several blurred images and then adding the blurred textures together. The implementation of this effect is done in a fragment shader. The fragment shader uses a 7 sample points and contains a boolean to specify whether the kernel should be aligned vertically of horizontally. Using a two pass generates a 7*7 Gaussian kernel.
+
+The final pass is to combine the original images together with the blurred textures. This means that all four textures are added to a screen perpendicular quad (using multi-texturing) and a fragment shader is enabled to combine all for four textures.
+
+References:
