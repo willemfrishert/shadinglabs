@@ -4,31 +4,25 @@
 \author{Willem~Frishert}
 \title{Shader~Labs}
 
+\usepackage{subfigure}
 \usepackage{graphicx}
+\DeclareGraphicsRule{.JPG}{eps}{*}{`jpeg2ps #1} 
 
 \begin{document}
 \pagestyle{headings}
 % generates the title
 \maketitle
-\begin{figure}
-	\centering
-		\includegraphics{D:/1.eps}
-	\caption{test}
-	\label{fig:1}
-\end{figure}
 
 \section{Introduction}
 \label{sec:Introduction}
-This document contains a brief description of different shader effects and the algorithms used to implement them. The shaders have been made for the lab of the real-time rendering course and have been implemented in the GLSL (OpenGL Shading Language). The lab requires implementing two shaders (single pass rendering) and one multi-pass image filter (at least three passes supported). The two shaders doing only a single pass are a phong shader and a toon shader. For the multi-pass image filter, the choice was made to implement a bloom shader which contains nine passes in total.
+This document contains a brief description of different shader effects and the algorithms used to implement them. The shaders have been made for the lab of the real-time rendering course and have been implemented in the GLSL (OpenGL Shading Language). The lab requires implementing two shaders (single pass rendering) and one multi-pass image filter (at least three passes supported). The choice was made to do a a phong shader, a toon shader and a bloom shader as a multi-pass image filter.
 
 \section{Phong Shader}
 \label{sec:PhongShader}
 \subsection{Description}
 \label{sec:Description}
 
-There are two types of shading that OpenGL supports by default. These are flat shading and Gouraud shading. Flat shading gives a polygon one single color whereas Gouraud shading uses normals per vertices to calculate the intensity per vertex and then interpolates the intensity along the polygon. The latter type of shading works well for diffuse surfaces but specular highlights are not shown correctly.
-
-To correctly deal with specular highlights, Phong shading should be used. Instead of calculating the intensity per vertex and interpolating this intensity along the polygon, the normal of each vertex is interpolated along the polygon. After this is done, then per fragment, the intensity is calculated based on the vertex normal, the view direction and the light direction.
+There are two types of shading that OpenGL supports by default. These are flat shading and Gouraud shading. Flat shading gives a polygon one single color whereas Gouraud shading uses normals per vertices to calculate the intensity per vertex and then interpolates the intensity along the polygon. The latter type of shading works well for diffuse surfaces but specular highlights are not shown correctly. To correctly deal with specular highlights, Phong shading should be used. Instead of calculating the intensity per vertex and interpolating this intensity along the polygon, the normal of each vertex is interpolated along the polygon. After this is done, then per fragment, the intensity is calculated based on the vertex normal, the view direction and the light direction.
 
 
 \subsection{Implementation}
@@ -47,8 +41,31 @@ Where after, the angle between the reflection vector and the view vector (anothe
 
 There are not that many pitfalls during the implementation of this shader; however, to calculate the reflection vector, the direction of the light has to point towards the surface.
 
+%\pagebreak[4]
+
+\begin{figure}[htbp]
+  \begin{center}
+    \mbox{
+      \subfigure[gouraud shading] {\scalebox{0.4} {\includegraphics[width=512px]{images/gouraud.png}}} \quad
+      \subfigure[phong shading]   {\scalebox{0.4} {\includegraphics[width=512px]{images/phong.png}}}
+      }
+    \caption{gouraud versus phong shading}
+    \label{fig:phongShading}
+  \end{center}
+\end{figure}
+
+%\begin{figure}
+%	\centering
+%		\mbox{\includegraphics[width=128px]{images/phong.jpg}}
+%	\caption{Phong Shading}
+%	\label{fig:phongShading}
+%\end{figure}
+
+%\mbox{\includegraphics[width=256px, bb= 0 0 256 256]{images/gouraud.jpg}}
+
 \subsection{Phong shader result}
 \label{sec:PhongShaderResult}
+Figure~\ref{fig:phongShading} shows the the result of the phong shader in comparison with gouraud shading done by OpenGL.
 
 
 \section{Toon Shader}
@@ -61,9 +78,16 @@ The idea of a toon shader is to use a 3D rendering technique that is used to sim
 \subsection{Implementation}
 \label{sec:ImplementationToonShader}
 
-There are several different ways to implement a toon shader but all have a basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). The first implementation that was implemented used conditional control flow. The negative aspect of using conditional statements is that the fragments, which are calculated in parallel, all need to be send further down the pipeline together. Thus fragments which finish quickly will still wait for the last fragment to finish. To avoid this problem of "the weakest link", there are other ways of obtaining the intensity. Several methods online describe the use of a lookup table in the form of a texture. The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
+There are several different ways to implement a toon shader but all have a basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). Several methods online describe the use of a lookup table in the form of a texture (See Figure~\ref{fig:TextureLUT}). The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
 
-A texture lookup table.
+\begin{figure}[h]
+  \begin{center}
+		\scalebox{0.5} {\includegraphics[width=512px]{images/lightmap.png}}
+    \caption{An example of a texture lookup table.}
+    \label{fig:TextureLUT}
+  \end{center}
+\end{figure}
+
 
 One additional step which can easily be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader on.
 
@@ -72,9 +96,20 @@ One additional step which can easily be implemented is to give the object a blac
 
 One of the troubles during implementation was the fact that the texture (the lookup table) was linearly interpolated by OpenGL and thus the result did not look accurate as expected. It took quite a while to discover that this was the problem since the texture at this point was also set to repeat and thus the first and last pixel in the texture were also interpolated which gave a strange effect
 
+%\pagebreak[4]
+
+\begin{figure}[htbp]
+  \begin{center}
+		\scalebox{0.5} {\includegraphics[width=512px]{images/toon.png}}
+    \caption{toon shading}
+    \label{fig:toonShading}
+  \end{center}
+\end{figure}
+
 \subsection{Toon shader result}
 \label{sec:ToonShaderResult}
 
+Figure~\ref{fig:toonShading} shows the the result of the toon shader. In total, there are 7 different levels being used to generate this effect.
 
 \section{Bloom Shader}
 \label{sec:BloomShader}
@@ -115,12 +150,26 @@ The final pass is to combine the original images together with the blurred textu
 \label{sec:PitfallsBloomShader}
 The trouble with multi-pass image filtering is that there are lot of different components involved. Each shader has to run at the correct time with the correct textures and variables as input. This makes it quite confusing and good structure of code is essential. Unfortunately, then it is still quite hard to debug the code. One way is to output the textures seperately to screen to see in which pass a problem occurs.
 
-References:
-Partl~\cite{pa} has
-proposed that \ldots
-\begin{thebibliography}{99}
-	\bibitem{pa} H.~Partl:
-	\emph{German \TeX},
-	TUGboat Volume~9, Issue~1 (1988)
-\end{thebibliography}
+%\pagebreak[4]
+\begin{figure}[h]
+  \begin{center}
+    \mbox{
+      \subfigure[phong shading] {\scalebox{0.2} {\includegraphics[width=512px]{images/phong2.png}}} \quad
+      \subfigure[brightpass]    {\scalebox{0.2} {\includegraphics[width=512px]{images/brightpass.png}}} \quad
+      \subfigure[first blur]    {\scalebox{0.2} {\includegraphics[width=512px]{images/firstblur.png}}} \quad
+      }
+    \mbox{
+      \subfigure[second blur]   {\scalebox{0.2} {\includegraphics[width=512px]{images/secondblur.png}}} \quad
+      \subfigure[third blur]    {\scalebox{0.2} {\includegraphics[width=512px]{images/thirdblur.png}}} \quad
+      \subfigure[final image]   {\scalebox{0.2} {\includegraphics[width=512px]{images/bloom.png}}}
+      }
+    \caption{phong shading and the blooming effect applied to it}
+    \label{fig:bloomPassShading}
+  \end{center}
+\end{figure}
+
+\subsection{Bloom shader result}
+\label{sec:bloomShaderResult}
+Figure~\ref{fig:bloomPassShading} shows the different textures obtained during the passes. The phong shaded image is used as original image and combined with the three different blurred textures to form the final image
+
 \end{document}

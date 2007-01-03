@@ -16,7 +16,7 @@ CMyRenderer::CMyRenderer( const int aWidth, const int aHeight )
 , iShadingType( ENone )
 , iCurrentTime( 0 )
 , iPreviousTime( 0 )
-, iZoom( -22.0f )
+, iZoom( -18.0f )
 , iFpsCountString("")
 {
 	InitMain();
@@ -203,8 +203,8 @@ void CMyRenderer::RenderObjects()
 	glRotatef(iXRotation, 1, 0, 0);
 	glRotatef(iYRotation, 0, 1, 0);
 	
-	glRotatef(25, 1, 0, 0);
-	glRotatef(80, 0, 1, 0);	
+//	glRotatef(25, 1, 0, 0);
+	glRotatef(10, 0, 1, 0);	
 	glRotatef(10, 1, 0, 0);
 
 	chevy->draw();
