@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  3 JAN 2007 02:33
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  3 JAN 2007 16:51
 entering extended mode
 **D:/LiU/TNCG03*Real-Time*Rendering/lab/Shaderlabs/latex/documentation.tex
 ("D:\LiU\TNCG03 Real-Time Rendering\lab\Shaderlabs\latex\documentation.tex"
@@ -22,6 +22,26 @@ File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
+("C:\Program Files\MiKTeX 2.5\tex\latex\subfigure\subfigure.sty"
+Package: subfigure 2002/07/30 v2.1.4 subfigure package
+\subfigtopskip=\skip43
+\subfigcapskip=\skip44
+\subfigcaptopadj=\dimen103
+\subfigbottomskip=\skip45
+\subfigcapmargin=\dimen104
+\subfiglabelskip=\skip46
+\c@subfigure=\count87
+\c@lofdepth=\count88
+\c@subtable=\count89
+\c@lotdepth=\count90
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+("C:\Program Files\MiKTeX 2.5\tex\latex\subfigure\subfigure.cfg")
+\subfig@top=\skip47
+\subfig@bottom=\skip48
+)
 ("C:\Program Files\MiKTeX 2.5\tex\latex\graphics\graphicx.sty"
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
@@ -42,105 +62,131 @@ Package graphics Info: Driver file: pdftex.def on input line 90.
 
 ("C:\Program Files\MiKTeX 2.5\tex\latex\graphics\pdftex.def"
 File: pdftex.def 2006/08/14 v0.03t Graphics/color for pdfTeX
-\Gread@gobject=\count87
+\Gread@gobject=\count91
 ))
-\Gin@req@height=\dimen103
-\Gin@req@width=\dimen104
+\Gin@req@height=\dimen105
+\Gin@req@width=\dimen106
 )
 (documentation.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
-LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
  ("C:\Program Files\MiKTeX 2.5\tex\context\base\supp-pdf.tex" ("C:\Program File
 s\MiKTeX 2.5\tex\context\base\supp-mis.tex"
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count88
-\scratchcounter=\count89
+\protectiondepth=\count92
+\scratchcounter=\count93
 \scratchtoks=\toks15
-\scratchdimen=\dimen105
-\scratchskip=\skip43
+\scratchdimen=\dimen107
+\scratchskip=\skip49
 \scratchmuskip=\muskip10
 \scratchbox=\box26
 \scratchread=\read1
 \scratchwrite=\write3
-\zeropoint=\dimen106
-\onepoint=\dimen107
-\onebasepoint=\dimen108
-\minusone=\count90
-\thousandpoint=\dimen109
-\onerealpoint=\dimen110
+\zeropoint=\dimen108
+\onepoint=\dimen109
+\onebasepoint=\dimen110
+\minusone=\count94
+\thousandpoint=\dimen111
+\onerealpoint=\dimen112
 \emptytoks=\toks16
 \nextbox=\box27
-\nextdepth=\dimen111
+\nextdepth=\dimen113
 \everyline=\toks17
-\!!counta=\count91
-\!!countb=\count92
-\recursecounter=\count93
+\!!counta=\count95
+\!!countb=\count96
+\recursecounter=\count97
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count94
-\nofMParguments=\count95
-\MPscratchCnt=\count96
-\MPscratchDim=\dimen112
-\MPnumerator=\count97
+\nofMPsegments=\count98
+\nofMParguments=\count99
+\MPscratchCnt=\count100
+\MPscratchDim=\dimen114
+\MPnumerator=\count101
 \everyMPtoPDFconversion=\toks18
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 12.
+(Font)              <14.4> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 12.
-
-
-! LaTeX Error: Unknown graphics extension: .eps.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.15 		\includegraphics{D:/1.eps}
-                                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[1
+(Font)              <7> on input line 14.
+ [1
 
 {psfonts.map}]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 41.
+(Font)              <12> on input line 35.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 41.
+(Font)              <8> on input line 35.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 41.
- [2] [3] [4] [5] [6] (documentation.aux)
+(Font)              <6> on input line 35.
+ <images/gouraud.png, id=14, 513.92pt x 513.92pt>
+File: images/gouraud.png Graphic file (type png)
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+<use images/gouraud.png> <images/phong.png, id=15, 513.92pt x 513.92pt>
+File: images/phong.png Graphic file (type png)
 
- ) 
+<use images/phong.png>
+Overfull \hbox (43.0935pt too wide) in paragraph at lines 51--52
+ [] 
+ []
+
+[2 <images/gouraud.png> <images/phong.png>]
+<images/lightmap.png, id=33, 513.92pt x 16.06pt>
+File: images/lightmap.png Graphic file (type png)
+ <use images/lightmap.png>
+[3 <images/lightmap.png (PNG copy)>]
+<images/toon.png, id=37, 513.92pt x 513.92pt>
+File: images/toon.png Graphic file (type png)
+ <use images/toon.png> [4 <images/toon.png>] [5] <images/phong2.png, id=45, 513
+.92pt x 513.92pt>
+File: images/phong2.png Graphic file (type png)
+
+<use images/phong2.png> <images/brightpass.png, id=46, 513.92pt x 513.92pt>
+File: images/brightpass.png Graphic file (type png)
+
+<use images/brightpass.png> <images/firstblur.png, id=47, 513.92pt x 513.92pt>
+File: images/firstblur.png Graphic file (type png)
+
+<use images/firstblur.png> <images/secondblur.png, id=48, 513.92pt x 513.92pt>
+File: images/secondblur.png Graphic file (type png)
+
+<use images/secondblur.png> <images/thirdblur.png, id=49, 513.92pt x 513.92pt>
+File: images/thirdblur.png Graphic file (type png)
+
+<use images/thirdblur.png> <images/bloom.png, id=50, 513.92pt x 513.92pt>
+File: images/bloom.png Graphic file (type png)
+
+<use images/bloom.png>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6] [7 <images/phong2.png> <images/brightpass.png> <images/firstblur.png> <imag
+es/secondblur.png> <images/thirdblur.png> <images/bloom.png>]
+(documentation.aux) ) 
 Here is how much of TeX's memory you used:
- 987 strings out of 95419
- 11676 string characters out of 1187297
- 59416 words of memory out of 1061068
- 4149 multiletter control sequences out of 60000
- 9507 words of font info for 33 fonts, out of 1000000 for 2000
+ 1218 strings out of 95419
+ 14957 string characters out of 1187297
+ 61469 words of memory out of 1062609
+ 4342 multiletter control sequences out of 60000
+ 9160 words of font info for 32 fonts, out of 1000000 for 2000
  14 hyphenation exceptions out of 8191
- 25i,6n,19p,1231b,230s stack positions out of 5000i,500n,10000p,200000b,32768s
+ 25i,8n,24p,860b,305s stack positions out of 5000i,500n,10000p,200000b,32768s
 PDF statistics:
- 40 PDF objects out of 300000
+ 63 PDF objects out of 300000
  0 named destinations out of 300000
- 1 words of extra memory for PDF output out of 10000
-<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmti12.pfb><C:/Program Fi
-les/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.5/f
-onts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/blues
-ky/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmbx12.pfb
-><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.pfb><C:/Program File
-s/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on documentation.pdf (6 pages, 57665 bytes).
+ 51 words of extra memory for PDF output out of 10000
+<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr10.
+pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program 
+Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.5
+/fonts/type1/bluesky/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/blu
+esky/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.pf
+b><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on documentation.pdf (7 pages, 651579 bytes).
