@@ -4,14 +4,13 @@
 #include "ShaderUniformValue.h"
 #include "TFramebufferObject.h"
 
-const int KNumberOfTextures=2;
 const int KNumberOfShadingPrograms=5;
 
-const int KNumberOfTextureMaps=5;
-const int KNumberOfDepthMaps=1;
-const int KTextureWidth=512;
+const int KNumberOfTextureMaps = 5;
+const int KNumberOfDepthMaps = 1;
+const int KTextureWidth= 512;
 const int KTextureHeight = 512;
-const int KNumberOfPasses=5;
+const int KNumberOfPasses = 5;
 
 const int KTextureBorder=0;
 const int KTextureLevel=0;
@@ -78,17 +77,17 @@ private:
 
 	ShaderUniformValue<bool>* iHorizontalBlur;
 
-	ShaderUniformValue<float>* iMipMapBias;
-	float iFirstBlurMipMapBias;
-	float iSecondBlurMipMapBias;
-	float iThirdBlurMipMapBias;
-
 	ShaderUniformValue<int>* iOriginalTexture;
 	ShaderUniformValue<int>* iBlurTexture1;
 	ShaderUniformValue<int>* iBlurTexture2;
 	ShaderUniformValue<int>* iBlurTexture3;
 
-	ShaderUniformValue<int>* iCombineTextures;
+	//ShaderUniformValue<int>* iCombineTextures;
+
+	ShaderUniformValue<float>* iMipMapBias;
+	float iFirstBlurMipMapBias;
+	float iSecondBlurMipMapBias;
+	float iThirdBlurMipMapBias;
 
 	CShaderEffect* iShaderEffect;
 };

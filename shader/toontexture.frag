@@ -1,16 +1,21 @@
+//uniform sampler1D lightMap;
 uniform sampler2D lightMap;
-varying vec3 normal, lightDir, viewDir;
+uniform float red, green, blue;
+varying vec3 vNormal;
 
 void main()
 {
-	vec3 normalNormalized = normalize(normal);
-	vec3 viewDirection = normalize(viewDir);
+	vec3 vNormalized = normalize(vNormal);
 
-	float dotLN = clamp( dot( lightDir, normalNormalized ), 0.0, 1.0 );
-	float dotVN = abs( dot( viewDirection, normalNormalized ) );
+	// calculate angle between light and surface normal
+	float dotLN = clamp( dot( gl_LightSource[0].position.xyz, vNormalized ), 0.0, 1.0 );
 
-	vec4 intensity = texture2D( lightMap, vec2( dotLN, 0.0 ) );
-	gl_FragColor = vec4( intensity.rgb, 1.0 );
+	// use dot-product as index for lookup table
+	vec4 intensity = texture2D( lightMap, vec2( dotLN, 0.0 ) );	
+	// use dot-product as index for lookup table
+	//vec4 intensity = texture1D( lightMap, dotLN );
+
+	gl_FragColor = vec4( intensity.r * red, intensity.g * green, intensity.b * blue, 1.0 );
 }
 
 

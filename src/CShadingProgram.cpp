@@ -149,6 +149,7 @@ bool CShaderProgram::Enable(bool aState)
 		if (status)
 		{	
 			glUseProgram(iShaderProgramId);
+			CHECK_GL_ERROR();
 			UpdateProgramUniformObjects();
 			CHECK_GL_ERROR();
 		}

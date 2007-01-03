@@ -97,20 +97,20 @@ void TFramebufferObject::AttachRenderBuffer( GLenum aAttachment, GLuint buffId )
 	glGetIntegerv( GL_FRAMEBUFFER_BINDING_EXT, &previousFrameBufferId );
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, iFramebufferObjectId);
 
-#ifndef NDEBUG
-	if( GetAttachedId(aAttachment) != buffId )
-    {
-#endif
+//#ifndef NDEBUG
+//	if( GetAttachedId(aAttachment) != buffId )
+//    {
+//#endif
 
     glFramebufferRenderbufferEXT( GL_FRAMEBUFFER_EXT, aAttachment, GL_RENDERBUFFER_EXT, buffId);
 
-#ifndef NDEBUG
-    }
-	else
-    {
-		cerr << "TFramebufferObject::AttachRenderBuffer PERFORMANCE WARNING:\n" << "\tRedundant bind of render buffer (id = " << buffId << ")\n" << "\tHINT : Compile with -DNDEBUG to remove this warning.\n";
-    }
-#endif
+//#ifndef NDEBUG
+//    }
+//	else
+//    {
+//		cerr << "TFramebufferObject::AttachRenderBuffer PERFORMANCE WARNING:\n" << "\tRedundant bind of render buffer (id = " << buffId << ")\n" << "\tHINT : Compile with -DNDEBUG to remove this warning.\n";
+//    }
+//#endif
 	//restore previous frame buffer
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFrameBufferId);
   }
