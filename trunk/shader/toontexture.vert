@@ -1,3 +1,9 @@
+/*!
+ * toontexture.vert
+ * 
+ * Willem Frishert
+ */
+
 varying vec3 vNormal;
 
 void main()

@@ -388,10 +388,6 @@
 			Filter="vert;frag"
 			>
 			<File
-				RelativePath="..\..\shader\blur.frag"
-				>
-			</File>
-			<File
 				RelativePath="..\..\shader\blureffect.frag"
 				>
 			</File>

@@ -1,3 +1,9 @@
+/*!
+ * blureffect.frag
+ * 
+ * Willem Frishert
+ */
+
 uniform float sampleDistance;
 uniform sampler2D textureMap;
 uniform bool horizontalBlur;

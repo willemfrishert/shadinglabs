@@ -132,10 +132,14 @@ void CMyRenderer::CalculateFramesPerSecond()
 
 	if ( iCurrentTime - iPreviousTime > 1000 )
 	{
-		ostr << "FPS:" << setprecision ( 3 ) << setw(3) << iFrame*1000.0/( iCurrentTime - iPreviousTime );
-		ostr << " iFSD:" << iShaderBloom->getFirstBlurSampleDistance();
+#ifdef SHOW_FPS
+		ostr << "FPS:" << setprecision ( 3 ) << setw(3) << iFrame*1000.0/( iCurrentTime - iPreviousTime ) << " ";
+#endif
+#ifdef SHOW_DEBUG
+		ostr << "iFSD:" << iShaderBloom->getFirstBlurSampleDistance();
 		ostr << " iSSD:" << iShaderBloom->getSecondBlurSampleDistance();
 		ostr << " iTSD:" << iShaderBloom->getThirdBlurSampleDistance();
+#endif
 		iFpsCountString = ostr.str();
 		iPreviousTime = iCurrentTime;
 		iFrame = 0;
@@ -346,12 +350,10 @@ void CMyRenderer::RenderScene()
 		}
 	}
 	CHECK_GL_ERROR();
-#ifdef SHOW_FPS
 	CShaderProgram::DisableAll();
 	CalculateFramesPerSecond();
 	DrawText(); 
-	CHECK_GL_ERROR();	
-#endif
+	CHECK_GL_ERROR();
 	glFlush();
 
 	glutSwapBuffers();	

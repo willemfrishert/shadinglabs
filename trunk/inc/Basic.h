@@ -51,5 +51,7 @@ void exit(char *aFile, int aLine, int aExitCode);
 
 
 #define SHOW_FPS
-#undef SHOW_FPS
+//#undef SHOW_FPS
 
+#define SHOW_DEBUG
+#undef SHOW_DEBUG

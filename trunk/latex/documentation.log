@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  3 JAN 2007 16:51
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  5 JAN 2007 00:13
 entering extended mode
 **D:/LiU/TNCG03*Real-Time*Rendering/lab/Shaderlabs/latex/documentation.tex
 ("D:\LiU\TNCG03 Real-Time Rendering\lab\Shaderlabs\latex\documentation.tex"
@@ -68,18 +68,18 @@ File: pdftex.def 2006/08/14 v0.03t Graphics/color for pdfTeX
 \Gin@req@width=\dimen106
 )
 (documentation.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
  ("C:\Program Files\MiKTeX 2.5\tex\context\base\supp-pdf.tex" ("C:\Program File
 s\MiKTeX 2.5\tex\context\base\supp-mis.tex"
 loading : Context Support Macros / Miscellaneous (2004.10.26)
@@ -115,18 +115,18 @@ loading : Context Support Macros / PDF (2004.03.26)
 \everyMPtoPDFconversion=\toks18
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 14.
+(Font)              <14.4> on input line 22.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 14.
+(Font)              <7> on input line 22.
  [1
 
 {psfonts.map}]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 35.
+(Font)              <12> on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 35.
+(Font)              <8> on input line 43.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 35.
+(Font)              <6> on input line 43.
  <images/gouraud.png, id=14, 513.92pt x 513.92pt>
 File: images/gouraud.png Graphic file (type png)
 
@@ -134,7 +134,7 @@ File: images/gouraud.png Graphic file (type png)
 File: images/phong.png Graphic file (type png)
 
 <use images/phong.png>
-Overfull \hbox (43.0935pt too wide) in paragraph at lines 51--52
+Overfull \hbox (43.0935pt too wide) in paragraph at lines 59--60
  [] 
  []
 
@@ -164,29 +164,38 @@ File: images/thirdblur.png Graphic file (type png)
 <use images/thirdblur.png> <images/bloom.png, id=50, 513.92pt x 513.92pt>
 File: images/bloom.png Graphic file (type png)
 
-<use images/bloom.png>
+<use images/bloom.png> [6] [7 <images/phong2.png> <images/brightpass.png> <imag
+es/firstblur.png> <images/secondblur.png> <images/thirdblur.png> <images/bloom.
+png>]
+Overfull \hbox (12.7555pt too wide) in paragraph at lines 255--255
+ []  \OT1/cmtt/m/n/8 vec4 intensityAmbient  = vec4(Ka) * gl_FrontMaterial.ambie
+nt  * gl_LightSource[0].ambient;[] 
+ []
 
-LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6] [7 <images/phong2.png> <images/brightpass.png> <images/firstblur.png> <imag
-es/secondblur.png> <images/thirdblur.png> <images/bloom.png>]
-(documentation.aux) ) 
+Overfull \hbox (55.2561pt too wide) in paragraph at lines 255--255
+ []                             \OT1/cmtt/m/n/8 * clamp( dot( normalVector, gl_
+LightSource[0].position.xyz ), 0.0, 1.0 );[] 
+ []
+
+[8] [9] [10] [11] (documentation.aux) ) 
 Here is how much of TeX's memory you used:
- 1218 strings out of 95419
- 14957 string characters out of 1187297
- 61469 words of memory out of 1062609
- 4342 multiletter control sequences out of 60000
- 9160 words of font info for 32 fonts, out of 1000000 for 2000
+ 1231 strings out of 95419
+ 15152 string characters out of 1187297
+ 62602 words of memory out of 1062718
+ 4353 multiletter control sequences out of 60000
+ 9637 words of font info for 34 fonts, out of 1000000 for 2000
  14 hyphenation exceptions out of 8191
- 25i,8n,24p,860b,305s stack positions out of 5000i,500n,10000p,200000b,32768s
+ 25i,8n,24p,864b,370s stack positions out of 5000i,500n,10000p,200000b,32768s
 PDF statistics:
- 63 PDF objects out of 300000
+ 78 PDF objects out of 300000
  0 named destinations out of 300000
  51 words of extra memory for PDF output out of 10000
-<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr10.
-pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program 
-Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.5
-/fonts/type1/bluesky/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/blu
-esky/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.pf
-b><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
-Output written on documentation.pdf (7 pages, 651579 bytes).
+<C:/Program Files/MiKTeX 2.5/fonts/type1
+/bluesky/cm/cmtt8.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr10
+.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program
+ Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.
+5/fonts/type1/bluesky/cm/cmsl12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bl
+uesky/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.p
+fb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on documentation.pdf (11 pages, 672770 bytes).
