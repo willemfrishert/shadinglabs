@@ -1,3 +1,9 @@
+/*!
+ * brightpass.frag
+ * 
+ * Willem Frishert
+ */
+
 uniform sampler2D textureMap;
 uniform float thresholdBrightness;
 

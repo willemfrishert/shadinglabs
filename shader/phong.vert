@@ -1,3 +1,9 @@
+/*!
+ * phong.vert
+ * 
+ * Willem Frishert
+ */
+
 varying vec3 vNormal; //normal at vertex
 varying vec3 vView; // view vector towards vertex
 

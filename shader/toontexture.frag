@@ -1,4 +1,9 @@
-//uniform sampler1D lightMap;
+/*!
+ * toontexture.frag
+ * 
+ * Willem Frishert
+ */
+
 uniform sampler2D lightMap;
 uniform float red, green, blue;
 varying vec3 vNormal;
@@ -12,8 +17,6 @@ void main()
 
 	// use dot-product as index for lookup table
 	vec4 intensity = texture2D( lightMap, vec2( dotLN, 0.0 ) );	
-	// use dot-product as index for lookup table
-	//vec4 intensity = texture1D( lightMap, dotLN );
 
 	gl_FragColor = vec4( intensity.r * red, intensity.g * green, intensity.b * blue, 1.0 );
 }

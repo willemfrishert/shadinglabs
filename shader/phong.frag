@@ -1,6 +1,13 @@
-uniform float Ka; //(0.0-1.0) The ambient coefficient (Ka) is used to determine how much ambient light affects a surface. 
-uniform float Ks; //(0.0-1.0) The diffuse coefficient (Kd) specifies how much of the diffuse light (incident light from the light source) affects the object.
-uniform float Kd; //(0.0-1.0) The specular coefficient (Ks) specifies how bright the specular reflection is.
+/*!
+ * phong.frag
+ * 
+ * Willem Frishert
+ */
+
+
+uniform float Ka; //(0.0-1.0)
+uniform float Ks; //(0.0-1.0)
+uniform float Kd; //(0.0-1.0)
 
 varying vec3 vNormal;  //interpolated normal accross the polygon
 varying vec3 vView; //interpolated view vector

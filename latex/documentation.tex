@@ -8,6 +8,14 @@
 \usepackage{graphicx}
 \DeclareGraphicsRule{.JPG}{eps}{*}{`jpeg2ps #1} 
 
+\newenvironment{mylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\scriptsize\bfseries}
+{\end{list}}
+
+\newenvironment{mytinylisting}
+{\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
+{\end{list}}
+
 \begin{document}
 \pagestyle{headings}
 % generates the title
@@ -22,7 +30,7 @@ This document contains a brief description of different shader effects and the a
 \subsection{Description}
 \label{sec:Description}
 
-There are two types of shading that OpenGL supports by default. These are flat shading and Gouraud shading. Flat shading gives a polygon one single color whereas Gouraud shading uses normals per vertices to calculate the intensity per vertex and then interpolates the intensity along the polygon. The latter type of shading works well for diffuse surfaces but specular highlights are not shown correctly. To correctly deal with specular highlights, Phong shading should be used. Instead of calculating the intensity per vertex and interpolating this intensity along the polygon, the normal of each vertex is interpolated along the polygon. After this is done, then per fragment, the intensity is calculated based on the vertex normal, the view direction and the light direction.
+There are two types of shading that OpenGL supports by default. These are flat shading and Gouraud shading. Flat shading gives a polygon one single color whereas Gouraud shading uses normals per vertices to calculate the intensity per vertex and then interpolates the intensity along the polygon. The latter type of shading works well for diffuse surfaces but specular highlights are not shown correctly. To correctly deal with specular highlights, Phong shading should be used. Instead of calculating the intensity per vertex and interpolating this intensity along the polygon, the normal of each vertex is interpolated along the polygon. After this is achieved the intensity per fragment is calculated based on the vertex normal, the view direction and the light direction.
 
 
 \subsection{Implementation}
@@ -78,7 +86,7 @@ The idea of a toon shader is to use a 3D rendering technique that is used to sim
 \subsection{Implementation}
 \label{sec:ImplementationToonShader}
 
-There are several different ways to implement a toon shader but all have a basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). Several methods online describe the use of a lookup table in the form of a texture (See Figure~\ref{fig:TextureLUT}). The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
+There are several different ways to implement a toon shader but share the same basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). Several methods online describe the use of a lookup table in the form of a texture (See Figure~\ref{fig:TextureLUT}). The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
 
 \begin{figure}[h]
   \begin{center}
@@ -89,7 +97,7 @@ There are several different ways to implement a toon shader but all have a basic
 \end{figure}
 
 
-One additional step which can easily be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader on.
+One additional step that can easily be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain this is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader on.
 
 \subsection{Pitfalls}
 \label{sec:PitfallsToonShader}
@@ -130,7 +138,7 @@ The OpenGL frame buffer objects (FBOs) allow to the generated image to be render
 \subsubsection{Generating original image}
 \label{sec:GeneratingOriginalImage}
 
-The first pass is generating the original texture. For this, the phong shader, which has been described earlier, is used (see section~\ref{sec:PhongShader} on page~\pageref{sec:PhongShader}). The pass uses the phong vertex and fragment shader. However, this could easily be any other input.
+The first pass is generating the original texture. For this, the phong shader that was described earlier, is used (see section~\ref{sec:PhongShader} on page~\pageref{sec:PhongShader}). The pass uses the phong vertex and fragment shader. However, this could easily be any other input.
 
 \subsubsection{Extracting the bright spots}
 \label{sec:ExtractingTheBrightSpots}
@@ -138,7 +146,7 @@ The second pass is to extract the bright spots in the scene. This is done using 
 
 \subsubsection{Blurring}
 \label{sec:Blurring}
-The next six passes create three different levels of blurred textures. To create a nice effect, Gaussian blur is used with a kernel of a certain size. Since the kernel is circularly symmetric, the Gaussian blur can be applied to a two-dimensional image as two independent one-dimensional calculations. This means that, instead of having \[O(m \times n \times M \times N)\] the performance will increase since the calculation is done in \[ O(m \times M \times N) + O(n \times M \times N) \] In order to linearly separately separate the Gaussian kernel into a horizontal direction blur and on top of that a vertical direction blur a two pass filter are used to create a single blurred texture.
+The next six passes create three different levels of blurred textures. To create a nice effect, Gaussian blur is used with a kernel of a certain size. Since the kernel is circularly symmetric, the Gaussian blur can be applied to a two-dimensional image as two independent one-dimensional calculations. This means that, instead of having \[O(m \times n \times M \times N)\] the performance will increase since the calculation is done in \[ O(m \times M \times N) + O(n \times M \times N) \] In order to linearly separate the Gaussian kernel into a horizontal direction blur and on top of that a vertical direction blur a two pass filter are used to create a single blurred texture.
 Another problem which occurs when blurring with a Gaussian kernel is that, if the sample points are taken too far apart from each other, a "ghosting" effect occurs. The resolution to this problem is to apply a small kernel multiple times to several blurred images and then adding the blurred textures together. The implementation of this effect is done in a fragment shader. The fragment shader uses a 7 sample points and contains a boolean to specify whether the kernel should be aligned vertically of horizontally. Using a two pass generates a 7*7 Gaussian kernel.
 
 \subsubsection{Combining the textures}
@@ -151,7 +159,7 @@ The final pass is to combine the original images together with the blurred textu
 The trouble with multi-pass image filtering is that there are lot of different components involved. Each shader has to run at the correct time with the correct textures and variables as input. This makes it quite confusing and good structure of code is essential. Unfortunately, then it is still quite hard to debug the code. One way is to output the textures seperately to screen to see in which pass a problem occurs.
 
 %\pagebreak[4]
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \mbox{
       \subfigure[phong shading] {\scalebox{0.2} {\includegraphics[width=512px]{images/phong2.png}}} \quad
@@ -172,4 +180,236 @@ The trouble with multi-pass image filtering is that there are lot of different c
 \label{sec:bloomShaderResult}
 Figure~\ref{fig:bloomPassShading} shows the different textures obtained during the passes. The phong shaded image is used as original image and combined with the three different blurred textures to form the final image
 
+\section{Conclusion}
+\label{sec:Conclusion}
+Building shaders can be tricky since it requires the programmer to think in vertices and fragments instead of meshes and scenes. It's good to start building a simple shader like the phong shader and from there on up work your way to something more complicated like the multi-pass filtering. Of course the pitfalls, such as whether to normalize a vector or not, will still be there. The only way to debug problems is to output pieces of information to the screen and check if they are correct, which is half the fun of the job.
+
+\pagebreak[4]
+
+\section{Source code Shaders}
+\label{sec:SourceCodeShaders}
+
+\paragraph{Phong shader}
+\label{sec:PhongShaderSource}
+
+
+\begin{mylisting}
+	\begin{verbatim}
+/*!
+ * phong.vert
+ * 
+ * Willem Frishert
+ */
+
+varying vec3 vNormal; //normal at vertex
+varying vec3 vView; // view vector towards vertex
+
+void main(void)
+{
+  //calculate the normal per vertex and have it interpolated.
+  vNormal = gl_NormalMatrix * gl_Normal;
+
+  //calculate the view vector and have it interpolated.
+  vView = vec3(gl_ModelViewMatrix * gl_Vertex);
+  
+  //3d Screen space:
+  //These two instructions are pretty much the same. ftransform is more precise though.
+  //gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+  gl_Position = ftransform();
+}
+
+
+/*!
+ * phong.frag
+ * 
+ * Willem Frishert
+ */
+
+
+uniform float Ka; //(0.0-1.0)
+uniform float Ks; //(0.0-1.0)
+uniform float Kd; //(0.0-1.0)
+
+varying vec3 vNormal;  //interpolated normal accross the polygon
+varying vec3 vView; //interpolated view vector
+
+void main(void)
+{
+  vec3 normalVector  = normalize(vNormal);
+  vec3 viewVector    = normalize(vView);
+  vec3 reflectVector = reflect( gl_LightSource[0].position.xyz, normalVector ); 
+
+  vec4 intensityAmbient  = vec4(Ka) * gl_FrontMaterial.ambient  * gl_LightSource[0].ambient;
+  vec4 intensityDiffuse  = vec4(Kd) * gl_FrontMaterial.diffuse
+                             * gl_LightSource[0].diffuse
+                             * clamp( dot( normalVector, gl_LightSource[0].position.xyz ), 0.0, 1.0 );
+                                    
+  vec4 intensitySpecular = vec4(Ks) * gl_FrontMaterial.specular 
+                             * gl_LightSource[0].specular
+                             * pow( clamp( dot( reflectVector, viewVector ), 0.0, 1.0 ),
+                                    gl_FrontMaterial.shininess );
+
+  gl_FragColor = intensityAmbient + intensityDiffuse + intensitySpecular;
+}
+
+	\end{verbatim}
+\end{mylisting}
+
+\pagebreak[4]
+
+\paragraph{Toon shader}
+\label{sec:ToonShaderSource}
+
+
+\begin{mylisting}
+	\begin{verbatim}
+/*!
+ * toontexture.vert
+ * 
+ * Willem Frishert
+ */
+
+varying vec3 vNormal;
+
+void main()
+{
+  vNormal = normalize(gl_NormalMatrix * gl_Normal);
+		
+  gl_Position = ftransform();
+}
+
+
+
+
+
+/*!
+ * toontexture.frag
+ * 
+ * Willem Frishert
+ */
+
+uniform sampler2D lightMap;
+uniform float red, green, blue;
+varying vec3 vNormal;
+
+void main()
+{
+  vec3 vNormalized = normalize(vNormal);
+
+  // calculate angle between light and surface normal
+  float dotLN = clamp( dot( gl_LightSource[0].position.xyz, vNormalized ), 0.0, 1.0 );
+
+  // use dot-product as index for lookup table
+  vec4 intensity = texture2D( lightMap, vec2( dotLN, 0.0 ) );	
+
+  gl_FragColor = vec4( intensity.r * red, 
+                       intensity.g * green,
+                       intensity.b * blue,
+                       1.0 );
+}
+	\end{verbatim}
+\end{mylisting}
+
+
+\pagebreak[4]
+
+\paragraph{Bloom shader}
+\label{sec:BloomShaderSource}
+\begin{mylisting}
+	\begin{verbatim}
+/*!
+ * brightpass.frag
+ * 
+ * Willem Frishert
+ */
+
+uniform sampler2D textureMap;
+uniform float thresholdBrightness;
+
+void main(void)
+{
+  vec4 texel = texture2D( textureMap, gl_TexCoord[0].st );
+	
+  // calculate the new intensity using a sigmoidal function (smoothstep)
+  vec3 newIntensity = smoothstep( vec3( thresholdBrightness ),
+                                  vec3(1.0), texel.rgb );
+
+  gl_FragColor = vec4( newIntensity , texel.a );
+}
+
+
+
+
+/*!
+ * blureffect.frag
+ * 
+ * Willem Frishert
+ */
+
+uniform float sampleDistance;
+uniform sampler2D textureMap;
+uniform bool horizontalBlur;
+
+const int KNumberOfSamples = 13;
+
+void main(void)
+{
+  // either horizontal blur or vertical blur
+  vec2 blurType = vec2( float(horizontalBlur), float(!horizontalBlur) );
+  vec4 sum = vec4 ( 0.0 );
+
+  vec2 samples[KNumberOfSamples];
+  samples[0]  = vec2( -0.6 );
+  samples[1]  = vec2( -0.5 );
+  samples[2]  = vec2( -0.4 );
+  samples[3]  = vec2( -0.3 );
+  samples[4]  = vec2( -0.2 );
+  samples[5]  = vec2( -0.1 );
+  samples[6]  = vec2(  0.0 ); // actual location
+  samples[7]  = vec2(  0.1 );
+  samples[8]  = vec2(  0.2 );
+  samples[9]  = vec2(  0.3 );
+  samples[10] = vec2(  0.4 );
+  samples[11] = vec2(  0.5 );
+  samples[12] = vec2(  0.6 );
+
+  for (int i = 0; i < KNumberOfSamples; i++)
+  {
+    sum += texture2D( textureMap, gl_TexCoord[0].st 
+            + sampleDistance * (samples[i] * blurType) );
+  }
+
+  sum /= float(KNumberOfSamples);
+  gl_FragColor = vec4( sum );
+}
+
+
+
+
+/*!
+ * combine.frag
+ * 
+ * Willem Frishert
+ */
+
+
+uniform sampler2D originalTexture;
+uniform sampler2D blurTexture1;
+uniform sampler2D blurTexture2;
+uniform sampler2D blurTexture3;
+
+void main(void)
+{
+  vec4 sum = vec4(0.0);
+
+  // get 4 textures and add them together
+  sum += texture2D(originalTexture, gl_TexCoord[0].st);	
+  sum += texture2D(blurTexture1, gl_TexCoord[0].st);	
+  sum += texture2D(blurTexture2, gl_TexCoord[0].st);
+  sum += texture2D(blurTexture3, gl_TexCoord[0].st);
+		
+  gl_FragColor = sum;		
+} 
+	\end{verbatim}
+\end{mylisting}
 \end{document}

@@ -1,3 +1,10 @@
+/*!
+ * combine.frag
+ * 
+ * Willem Frishert
+ */
+
+
 uniform sampler2D originalTexture;
 uniform sampler2D blurTexture1;
 uniform sampler2D blurTexture2;
