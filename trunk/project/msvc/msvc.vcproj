@@ -396,10 +396,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\shader\brightpass.vert"
-				>
-			</File>
-			<File
 				RelativePath="..\..\shader\combine.frag"
 				>
 			</File>
