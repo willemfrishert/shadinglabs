@@ -1,4 +1,4 @@
-This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  6 JAN 2007 18:31
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.25)  6 JAN 2007 22:22
 entering extended mode
 **D:/LiU/TNCG03*Real-Time*Rendering/lab/Shaderlabs/latex/documentation.tex
 ("D:\LiU\TNCG03 Real-Time Rendering\lab\Shaderlabs\latex\documentation.tex"
@@ -67,19 +67,30 @@ File: pdftex.def 2006/08/14 v0.03t Graphics/color for pdfTeX
 \Gin@req@height=\dimen105
 \Gin@req@width=\dimen106
 )
+("C:\Program Files\MiKTeX 2.5\tex\latex\fancyhdr\fancyhdr.sty"
+\fancy@headwidth=\skip49
+\f@ncyO@elh=\skip50
+\f@ncyO@erh=\skip51
+\f@ncyO@olh=\skip52
+\f@ncyO@orh=\skip53
+\f@ncyO@elf=\skip54
+\f@ncyO@erf=\skip55
+\f@ncyO@olf=\skip56
+\f@ncyO@orf=\skip57
+)
 (documentation.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
  ("C:\Program Files\MiKTeX 2.5\tex\context\base\supp-pdf.tex" ("C:\Program File
 s\MiKTeX 2.5\tex\context\base\supp-mis.tex"
 loading : Context Support Macros / Miscellaneous (2004.10.26)
@@ -87,7 +98,7 @@ loading : Context Support Macros / Miscellaneous (2004.10.26)
 \scratchcounter=\count93
 \scratchtoks=\toks15
 \scratchdimen=\dimen107
-\scratchskip=\skip49
+\scratchskip=\skip58
 \scratchmuskip=\muskip10
 \scratchbox=\box26
 \scratchread=\read1
@@ -115,18 +126,25 @@ loading : Context Support Macros / PDF (2004.03.26)
 \everyMPtoPDFconversion=\toks18
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 22.
+(Font)              <14.4> on input line 29.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 22.
- [1
+(Font)              <7> on input line 29.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 14.49998pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[1
 
 {psfonts.map}]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 43.
+(Font)              <12> on input line 50.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 43.
+(Font)              <8> on input line 50.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 43.
+(Font)              <6> on input line 50.
  <images/Gouraud.png, id=14, 513.92pt x 513.92pt>
 File: images/Gouraud.png Graphic file (type png)
 
@@ -134,7 +152,7 @@ File: images/Gouraud.png Graphic file (type png)
 File: images/Phong.png Graphic file (type png)
 
 <use images/Phong.png>
-Overfull \hbox (2.0654pt too wide) in paragraph at lines 76--77
+Overfull \hbox (2.0654pt too wide) in paragraph at lines 83--84
 \OT1/cmr/m/n/12 Figure 1[] shows the the re-sult of the Phong shader in com-par
 -i-son with Gouraud
  []
@@ -168,46 +186,41 @@ File: images/bloom.png Graphic file (type png)
 <use images/bloom.png> [6 <images/Phong2.png> <images/brightpass.png> <images/f
 irstblur.png> <images/secondblur.png> <images/thirdblur.png> <images/bloom.png>
 ]
-Underfull \hbox (badness 6268) in paragraph at lines 192--193
+Underfull \hbox (badness 6268) in paragraph at lines 199--200
 []\OT1/cmr/m/n/12 H. Kalo-girou: \OT1/cmr/m/it/12 How to do good bloom for HDR 
 ren-der-ing\OT1/cmr/m/n/12 ,
  []
 
 [7]
-Overfull \hbox (12.7555pt too wide) in paragraph at lines 265--265
+Overfull \hbox (12.7555pt too wide) in paragraph at lines 272--272
  []  \OT1/cmtt/m/n/8 vec4 intensityAmbient  = vec4(Ka) * gl_FrontMaterial.ambie
 nt  * gl_LightSource[0].ambient;[] 
  []
 
 
-Overfull \hbox (55.2561pt too wide) in paragraph at lines 265--265
+Overfull \hbox (55.2561pt too wide) in paragraph at lines 272--272
  []                             \OT1/cmtt/m/n/8 * clamp( dot( normalVector, gl_
 LightSource[0].position.xyz ), 0.0, 1.0 );[] 
  []
 
-[8] [9] [10] [11] (documentation.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+[8] [9] [10] [11] (documentation.aux) ) 
 Here is how much of TeX's memory you used:
- 1238 strings out of 95419
- 15280 string characters out of 1187297
- 62623 words of memory out of 1062739
- 4359 multiletter control sequences out of 60000
- 9984 words of font info for 35 fonts, out of 1000000 for 2000
+ 1366 strings out of 95419
+ 16531 string characters out of 1187297
+ 64846 words of memory out of 1064450
+ 4482 multiletter control sequences out of 60000
+ 9632 words of font info for 34 fonts, out of 1000000 for 2000
  14 hyphenation exceptions out of 8191
- 25i,8n,24p,851b,368s stack positions out of 5000i,500n,10000p,200000b,32768s
+ 25i,10n,43p,851b,460s stack positions out of 5000i,500n,10000p,200000b,32768s
 PDF statistics:
- 81 PDF objects out of 300000
+ 78 PDF objects out of 300000
  0 named destinations out of 300000
  51 words of extra memory for PDF output out of 10000
-<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmtt8.pfb><C:/Program Fil
-es/MiKTeX 2.5/fonts/type1/bluesky/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.5/fo
-nts/type1/bluesky/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky
-/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi12.pfb><
-C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsl12.pfb><C:/Program Files
-/MiKTeX 2.5/fonts/type1/bluesky/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/font
-s/type1/bluesky/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/c
-m/cmr17.pfb>
-Output written on documentation.pdf (11 pages, 682428 bytes).
+<C:/Program Files/MiKTeX 2.5/fonts/type1
+/bluesky/cm/cmtt8.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr10
+.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program
+ Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.
+5/fonts/type1/bluesky/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bl
+uesky/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.p
+fb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on documentation.pdf (11 pages, 678897 bytes).

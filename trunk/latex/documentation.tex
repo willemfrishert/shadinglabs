@@ -16,8 +16,15 @@
 {\begin{list}{}{\setlength{\leftmargin}{1em}}\item\tiny\bfseries}
 {\end{list}}
 
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\lhead{\fancyplain{}{\textit{\leftmark}}}
+\chead{}
+\rhead{\fancyplain{}}
+
 \begin{document}
-\pagestyle{headings}
 % generates the title
 \maketitle
 
