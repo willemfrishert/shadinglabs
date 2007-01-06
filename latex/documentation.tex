@@ -23,7 +23,7 @@
 
 \section{Introduction}
 \label{sec:Introduction}
-This document contains a brief description of different shader effects and the algorithms used to implement them. The shaders have been made for the lab of the real-time rendering course and have been implemented in the GLSL (OpenGL Shading Language). The lab requires implementing two shaders (single pass rendering) and one multi-pass image filter (at least three passes supported). The choice was made to do a a phong shader, a toon shader and a bloom shader as a multi-pass image filter.
+This document contains a brief description of different shader effects and the algorithms used to implement them. The shaders have been made for the lab of the real-time rendering course and have been implemented in the GLSL (OpenGL Shading Language). The lab requires implementing two shaders (single pass rendering) and one multi-pass image filter (at least three passes supported). The choice was made to do a a Phong shader, a toon shader and a bloom shader as a multi-pass image filter.
 
 \section{Phong Shader}
 \label{sec:PhongShader}
@@ -36,7 +36,7 @@ There are two types of shading that OpenGL supports by default. These are flat s
 \subsection{Implementation}
 \label{sec:ImplementationPhongShader}
 
-The phong shader is a single pass rendering algorithm, consisting of a vertex and fragment shader. The vertex shader task is to calculate the normal per vertex and calculate the view vector per vertex. Both these vectors are then interpolated over the triangle and handled by the fragment shader.
+The Phong shader is a single pass rendering algorithm, consisting of a vertex and fragment shader. The vertex shader task is to calculate the normal per vertex and calculate the view vector per vertex. Both these vectors are then interpolated over the triangle and handled by the fragment shader.
 
 The fragment shader receives the interpolated normal and view direction vector and then calculates the ambient, diffuse and specular component using the vertex normal, the view direction vector and the lighting direction vector. In this calculation, the angle between the normal vector and light vector (dot product) is used to for the diffuse component. For the specular component, the reflection vector is calculated using:
 
@@ -47,33 +47,33 @@ Where after, the angle between the reflection vector and the view vector (anothe
 \subsection{Pitfalls}
 \label{sec:PitfallsPhongShader}
 
-There are not that many pitfalls during the implementation of this shader; however, to calculate the reflection vector, the direction of the light has to point towards the surface.
+One of the problems encountered during the creation of the shader was the way to calculate the reflection vector. It took a while to notice that the direction of the light has to point towards the surface to be able to use the reflect method. 
 
 %\pagebreak[4]
 
 \begin{figure}[htbp]
   \begin{center}
     \mbox{
-      \subfigure[gouraud shading] {\scalebox{0.4} {\includegraphics[width=512px]{images/gouraud.png}}} \quad
-      \subfigure[phong shading]   {\scalebox{0.4} {\includegraphics[width=512px]{images/phong.png}}}
+      \subfigure[Gouraud shading] {\scalebox{0.3} {\includegraphics[width=512px]{images/Gouraud.png}}} \quad
+      \subfigure[Phong shading]   {\scalebox{0.3} {\includegraphics[width=512px]{images/Phong.png}}}
       }
-    \caption{gouraud versus phong shading}
-    \label{fig:phongShading}
+    \caption{Gouraud versus Phong shading}
+    \label{fig:PhongShading}
   \end{center}
 \end{figure}
 
 %\begin{figure}
 %	\centering
-%		\mbox{\includegraphics[width=128px]{images/phong.jpg}}
+%		\mbox{\includegraphics[width=128px]{images/Phong.jpg}}
 %	\caption{Phong Shading}
-%	\label{fig:phongShading}
+%	\label{fig:PhongShading}
 %\end{figure}
 
-%\mbox{\includegraphics[width=256px, bb= 0 0 256 256]{images/gouraud.jpg}}
+%\mbox{\includegraphics[width=256px, bb= 0 0 256 256]{images/Gouraud.jpg}}
 
 \subsection{Phong shader result}
 \label{sec:PhongShaderResult}
-Figure~\ref{fig:phongShading} shows the the result of the phong shader in comparison with gouraud shading done by OpenGL.
+Figure~\ref{fig:PhongShading} shows the the result of the Phong shader in comparison with Gouraud shading done by OpenGL.
 
 
 \section{Toon Shader}
@@ -86,7 +86,7 @@ The idea of a toon shader is to use a 3D rendering technique that is used to sim
 \subsection{Implementation}
 \label{sec:ImplementationToonShader}
 
-There are several different ways to implement a toon shader but share the same basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). Several methods online describe the use of a lookup table in the form of a texture (See Figure~\ref{fig:TextureLUT}). The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. Thus the dot-product is used as an index to get the intensity from the texture and no conditional control flow has to be implemented. Every fragment will execute the same code and be done at (roughly) the same time.
+There are several different ways to implement a toon shader but share the same basic idea. In the vertex shader the vertex normal is rotated accordingly and interpolated across the triangle. In the fragment shader, the appropriate intensity is picked based on the angle between the light direction and the normal (dot-product). Some methods online describe the use of a lookup table in the form of a texture (See Figure~\ref{fig:TextureLUT}). The idea is that the texture only contains a number intensities and uses nearest neighbor when being accessed. The dot-product is used as an index to get the intensity from the texture.
 
 \begin{figure}[h]
   \begin{center}
@@ -97,7 +97,7 @@ There are several different ways to implement a toon shader but share the same b
 \end{figure}
 
 
-One additional step that can easily be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain this is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader on.
+One additional step that can be implemented is to give the object a black edge which makes it look like it's really a cartoon. A way to obtain this is to render the object's backside (front face culling) with the polygon mode set to lines. During this step, the toon shader is disabled and the line width is set to a higher value than the default. On top of this, the front side is rendered with the toon shader turned on.
 
 \subsection{Pitfalls}
 \label{sec:PitfallsToonShader}
@@ -108,7 +108,7 @@ One of the troubles during implementation was the fact that the texture (the loo
 
 \begin{figure}[htbp]
   \begin{center}
-		\scalebox{0.5} {\includegraphics[width=512px]{images/toon.png}}
+		\scalebox{0.3} {\includegraphics[width=512px]{images/toon.png}}
     \caption{toon shading}
     \label{fig:toonShading}
   \end{center}
@@ -138,7 +138,7 @@ The OpenGL frame buffer objects (FBOs) allow to the generated image to be render
 \subsubsection{Generating original image}
 \label{sec:GeneratingOriginalImage}
 
-The first pass is generating the original texture. For this, the phong shader that was described earlier, is used (see section~\ref{sec:PhongShader} on page~\pageref{sec:PhongShader}). The pass uses the phong vertex and fragment shader. However, this could easily be any other input.
+The first pass is generating the original texture. For this, the Phong shader that was described earlier, is used (see section~\ref{sec:PhongShader} on page~\pageref{sec:PhongShader}). The pass uses the Phong vertex and fragment shader. However, this could easily be any other input.
 
 \subsubsection{Extracting the bright spots}
 \label{sec:ExtractingTheBrightSpots}
@@ -147,7 +147,7 @@ The second pass is to extract the bright spots in the scene. This is done using 
 \subsubsection{Blurring}
 \label{sec:Blurring}
 The next six passes create three different levels of blurred textures. To create a nice effect, Gaussian blur is used with a kernel of a certain size. Since the kernel is circularly symmetric, the Gaussian blur can be applied to a two-dimensional image as two independent one-dimensional calculations. This means that, instead of having \[O(m \times n \times M \times N)\] the performance will increase since the calculation is done in \[ O(m \times M \times N) + O(n \times M \times N) \] In order to linearly separate the Gaussian kernel into a horizontal direction blur and on top of that a vertical direction blur a two pass filter are used to create a single blurred texture.
-Another problem which occurs when blurring with a Gaussian kernel is that, if the sample points are taken too far apart from each other, a "ghosting" effect occurs. The resolution to this problem is to apply a small kernel multiple times to several blurred images and then adding the blurred textures together. The implementation of this effect is done in a fragment shader. The fragment shader uses a 7 sample points and contains a boolean to specify whether the kernel should be aligned vertically of horizontally. Using a two pass generates a 7*7 Gaussian kernel.
+Another problem which occurs when blurring with a Gaussian kernel is that, if the sample points are taken too far apart from each other, a "ghosting" effect occurs. The resolution to this problem is to apply a small kernel multiple times to several blurred images and then adding the blurred textures together. %The implementation of this effect is done in a fragment shader. The fragment shader uses a 7 sample points and contains a boolean to specify whether the kernel should be aligned vertically of horizontally. Using a two pass generates a 7*7 Gaussian kernel.
 
 \subsubsection{Combining the textures}
 \label{sec:CombiningTheTextures}
@@ -162,7 +162,7 @@ The trouble with multi-pass image filtering is that there are lot of different c
 \begin{figure}[ht]
   \begin{center}
     \mbox{
-      \subfigure[phong shading] {\scalebox{0.2} {\includegraphics[width=512px]{images/phong2.png}}} \quad
+      \subfigure[Phong shading] {\scalebox{0.2} {\includegraphics[width=512px]{images/Phong2.png}}} \quad
       \subfigure[brightpass]    {\scalebox{0.2} {\includegraphics[width=512px]{images/brightpass.png}}} \quad
       \subfigure[first blur]    {\scalebox{0.2} {\includegraphics[width=512px]{images/firstblur.png}}} \quad
       }
@@ -171,21 +171,21 @@ The trouble with multi-pass image filtering is that there are lot of different c
       \subfigure[third blur]    {\scalebox{0.2} {\includegraphics[width=512px]{images/thirdblur.png}}} \quad
       \subfigure[final image]   {\scalebox{0.2} {\includegraphics[width=512px]{images/bloom.png}}}
       }
-    \caption{phong shading and the blooming effect applied to it}
+    \caption{Phong shading and the blooming effect applied to it}
     \label{fig:bloomPassShading}
   \end{center}
 \end{figure}
 
 \subsection{Bloom shader result}
 \label{sec:bloomShaderResult}
-Figure~\ref{fig:bloomPassShading} shows the different textures obtained during the passes. The phong shaded image is used as original image and combined with the three different blurred textures to form the final image
+Figure~\ref{fig:bloomPassShading} shows the different textures obtained during the passes. The Phong shaded image is used as original image and combined with the three different blurred textures to form the final image
 
 \section{Conclusion}
 \label{sec:Conclusion}
-Building shaders can be tricky since it requires the programmer to think in vertices and fragments instead of meshes and scenes. It's good to start building a simple shader like the phong shader and from there on up work your way to something more complicated like the multi-pass filtering. Of course the pitfalls, such as whether to normalize a vector or not, will still be there. The only way to debug problems is to output pieces of information to the screen and check if they are correct, which is half the fun of the job.
+Building shaders can be tricky since it requires the programmer to think in vertices and fragments instead of meshes and scenes. It's good to start building a simple shader like the Phong shader and from there on up work your way to something more complicated like the multi-pass filtering. Of course the pitfalls, such as whether to normalize a vector or not, will still be there. The only way to debug problems is to output pieces of information to the screen and check if they are correct, which is half the fun of the job.
 
 \begin{thebibliography}{99}
-	\bibitem{lighthouse3d.com} lighthouse3d.com: \emph{GLSL Tutorial}, www.lighthouse3d.com (2006)
+	\bibitem{Lighthouse3d.com} Lighthouse3d: \emph{GLSL Tutorial}, www.lighthouse3d.com (2006)
 	\bibitem{OpenGLShadingLanguage} R.J. Rost, \emph{OpenGL Shading Language}, 2nd Edition (2006)
 	\bibitem{3DComputerGraphics} A.H. Watt: \emph{3D Computer Graphics}, 3rd Edition (2000)
 	\bibitem{Cel-shading} S. Hamlaoui: \emph{Cel-shading}, www.gamedev.net
@@ -194,17 +194,19 @@ Building shaders can be tricky since it requires the programmer to think in vert
 
 \pagebreak[4]
 
+\appendix
+
 \section{Source code shaders}
 \label{sec:SourceCodeShaders}
 
-\paragraph{Phong shader}
+\subsection{Phong shader}
 \label{sec:PhongShaderSource}
 
 
 \begin{mylisting}
 	\begin{verbatim}
 /*!
- * phong.vert
+ * Phong.vert
  * 
  * Willem Frishert
  */
@@ -228,7 +230,7 @@ void main(void)
 
 
 /*!
- * phong.frag
+ * Phong.frag
  * 
  * Willem Frishert
  */
@@ -265,7 +267,7 @@ void main(void)
 
 \pagebreak[4]
 
-\paragraph{Toon shader}
+\subsection{Toon shader}
 \label{sec:ToonShaderSource}
 
 
@@ -321,7 +323,7 @@ void main()
 
 \pagebreak[4]
 
-\paragraph{Bloom shader}
+\subsection{Bloom shader}
 \label{sec:BloomShaderSource}
 \begin{mylisting}
 	\begin{verbatim}
